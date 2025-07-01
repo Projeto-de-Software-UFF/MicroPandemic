@@ -29,4 +29,4 @@ class Carta:
         return True
 
     def __repr__(self) -> str:
-        return f"{self.tipo.value}: {self.nome}
+        return f"{self.tipo.value}: {self.nome}"
