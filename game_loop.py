@@ -87,12 +87,7 @@ def main():
                         kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]
 
                     elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):
-                        print("\nEscolha a cor da doença:")
-                        from enuns.cor import Cor # Import inside function for lazy loading
-                        for i, cor in enumerate(Cor):
-                            print(f"{i+1}. {cor.name}")
-                        cor_idx = int(input("Digite o número da cor: ")) - 1
-                        kwargs["cor"] = list(Cor)[cor_idx]
+                        kwargs["cor"] = carta_selecionada.cor
 
                     # Ação de Ativar a Carta
                     sucesso = carta_selecionada.ativar(jogo, jogador, **kwargs)
