@@ -2,7 +2,7 @@
 import pytest
 from domain.carta.carta import Carta, TipoCarta
 from domain.carta.eventodoenca import EventoDoenca
-from domain.carta.construircentropesquisa import Construircentropesquisa
+from domain.carta.construircentropesquisa import ConstruirCentroPesquisa
 from enuns.cor import Cor
 
 # Teste básico para a classe Carta com tipo CIDADE
@@ -22,12 +22,12 @@ def test_evento_doenca_tem_cor():
 
 # Teste para verificar se Construircentropesquisa guarda o nome corretamente
 def test_construir_centro_pesquisa_nome():
-    centro = Construircentropesquisa("Paris")
+    centro = ConstruirCentroPesquisa()
     assert centro.nome == "Paris"
     
 # Teste para garantir que Construircentropesquisa é uma subclasse de Carta e tem tipo correto
 def test_construircentropesquisa_herda_carta():
-    carta = Construircentropesquisa("Atlanta")
+    carta = ConstruirCentroPesquisa()
     assert isinstance(carta, Carta)
     assert carta.tipo == TipoCarta.CIDADE
 
