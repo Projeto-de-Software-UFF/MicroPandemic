@@ -26,6 +26,7 @@ class Jogo:
         self.vitoria: bool = False
         self.jogador_atual_idx: int = 0
         self._infeccao_bloqueada: bool = False
+        self._turn_count: int = 0
         
         Jogo._instancia = self
 
@@ -117,6 +118,7 @@ class Jogo:
         # Mudar para o próximo jogador
         self.jogador_atual_idx = (self.jogador_atual_idx + 1) % len(self.jogadores)
         self.acoes_restantes = config.MAX_ACTIONS_PER_TURN
+        self._turn_count += 1
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
 
         if config.DRAW_CARDS_AT_START_OF_TURN:
@@ -142,8 +144,9 @@ class Jogo:
                 self.jogador_atual.mao.adicionar_carta(carta)
         
         if not self._infeccao_bloqueada:
-            for _ in range(config.INFECTION_FREQUENCY):
-                self.fase_infeccao()
+            if self._turn_count % config.INFECTION_PHASE_FREQUENCY == 0:
+                for _ in range(config.INFECTIONS_PER_PHASE):
+                    self.fase_infeccao()
         else:
             print("Fase de infecção pulada devido à carta Bloquear Infecção.")
             self._infeccao_bloqueada = False

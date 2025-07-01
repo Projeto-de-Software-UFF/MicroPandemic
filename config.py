@@ -28,5 +28,5 @@ MULTIPLY_DECK_BY_PLAYERS = False # True para multiplicar o deck pelo número de 
 DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pesquisa para descobrir a cura
 
 # Frequência de Eventos e Compra de Cartas
-INFECTION_FREQUENCY = 1 # Quantas vezes a fase de infecção acontece por turno
-NUM_CARDS_TO_DRAW = 2 # Quantas cartas são compradas na fase de compra de cartas
+INFECTION_PHASE_FREQUENCY = 1 # De quanto em quantos turnos há uma fase de infecção
+INFECTIONS_PER_PHASE = 1 # Quantas infecções ocorrem na fase de infecção
