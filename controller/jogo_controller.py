@@ -19,7 +19,7 @@ class Jogo:
         
         self.jogadores: List[Jogador] = []
         self.cidades: Dict[str, Cidade] = {}
-        self.baralho: Baralho = Baralho(num_jogadores)
+        
         self.doencas: Dict[Cor, Doenca] = {}
         self.acoes_restantes: int = config.MAX_ACTIONS_PER_TURN
         self.game_over: bool = False
@@ -48,6 +48,9 @@ class Jogo:
         map_controller = GameMap(config.NUM_CITIES, config.MAX_NEIGHBORS_PER_CITY)
         self.cidades = {c.nome: c for c in map_controller.getMap()}
         
+        # Inicializa o baralho aqui, pois num_jogadores está disponível
+        self.baralho: Baralho = Baralho(num_jogadores)
+
         # 3. Criar Jogadores
         cidade_inicial = random.choice(list(self.cidades.values()))
         for i in range(num_jogadores):
