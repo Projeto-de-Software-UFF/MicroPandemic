@@ -44,7 +44,7 @@ def main():
         else:
             # If cards are drawn at the end of the turn, check if actions are over to start the drawing phase
             if jogo.acoes_restantes <= 0:
-                jogo.comprar_cartas_fase()
+                jogo.executar_fases_fim_turno()
                 if not jogo.game_over:
                     jogo.proximo_turno()
                 input("Pressione Enter para iniciar o próximo turno...")
