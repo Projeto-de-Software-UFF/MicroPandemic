@@ -37,18 +37,11 @@ def main():
         
         jogador = jogo.jogador_atual
 
-        # Logic for drawing cards based on config
-        if config.DRAW_CARDS_AT_START_OF_TURN:
-            # If cards are drawn at the start of the turn, the drawing phase already occurred in proximo_turno
-            pass
-        else:
-            # If cards are drawn at the end of the turn, check if actions are over to start the drawing phase
-            if jogo.acoes_restantes <= 0:
-                jogo.executar_fases_fim_turno()
-                if not jogo.game_over:
-                    jogo.proximo_turno()
-                input("Pressione Enter para iniciar o próximo turno...")
-                continue # Skip the rest of the loop for the next turn
+        # Se acabaram as ações, avança para a próxima fase
+        if jogo.acoes_restantes <= 0:
+            if not jogo.game_over:
+                jogo.proximo_turno()
+            input("Pressione Enter para iniciar o próximo turno...")
 
         if jogo.acoes_restantes > 0:
             menu()

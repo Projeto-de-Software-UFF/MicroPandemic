@@ -128,8 +128,7 @@ class Jogo:
         self._share_card_actions_this_turn = {}
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
 
-        if config.DRAW_CARDS_AT_START_OF_TURN:
-            self.executar_fases_fim_turno()
+        self.executar_fases_fim_turno()
 
         self.verificar_condicoes_finais()
 
