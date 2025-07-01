@@ -31,3 +31,6 @@ DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pe
 INFECTION_PHASE_FREQUENCY = 1 # De quanto em quantos turnos há uma fase de infecção
 INFECTIONS_PER_PHASE = 1 # Quantas infecções ocorrem na fase de infecção
 NUM_CARDS_TO_DRAW = 2 # Quantas cartas são compradas na fase de compra de cartas
+
+# Limites de Ações Específicas
+MAX_SHARE_CARD_ACTIONS_PER_TURN = 1 # Quantidade máxima de vezes que um jogador pode usar a ação de compartilhar carta por turno

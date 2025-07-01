@@ -27,6 +27,7 @@ class Jogo:
         self.jogador_atual_idx: int = 0
         self._infeccao_bloqueada: bool = False
         self._turn_count: int = 0
+        self._share_card_actions_this_turn: Dict[Jogador, int] = {}
         
         Jogo._instancia = self
 
@@ -101,8 +102,13 @@ class Jogo:
             print("Não há outros jogadores para compartilhar cartas.")
             return False
 
+        if self._share_card_actions_this_turn.get(jogador_origem, 0) >= config.MAX_SHARE_CARD_ACTIONS_PER_TURN:
+            print(f"Você já usou a ação de compartilhar carta {config.MAX_SHARE_CARD_ACTIONS_PER_TURN} vez(es) neste turno.")
+            return False
+
         if jogador_origem.compartilhar_carta(jogador_destino, carta_a_compartilhar):
             self.acoes_restantes -= 1
+            self._share_card_actions_this_turn[jogador_origem] = self._share_card_actions_this_turn.get(jogador_origem, 0) + 1
             print(f"Compartilhamento realizado. Ações restantes: {self.acoes_restantes}")
             return True
         return False
@@ -119,6 +125,7 @@ class Jogo:
         self.jogador_atual_idx = (self.jogador_atual_idx + 1) % len(self.jogadores)
         self.acoes_restantes = config.MAX_ACTIONS_PER_TURN
         self._turn_count += 1
+        self._share_card_actions_this_turn = {}
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
 
         if config.DRAW_CARDS_AT_START_OF_TURN:
