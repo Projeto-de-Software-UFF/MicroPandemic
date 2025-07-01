@@ -12,7 +12,7 @@ def exibir_estado_jogo(jogo: Jogo):
         jogador_atual=jogo.jogador_atual,
         curas_descobertas=[cor.name for cor, doenca in jogo.doencas.items() if doenca.curada]
     )
-    viewMap(list(jogo.cidades.values()))
+    viewMap(list(jogo.cidades.values()), jogo.jogadores)
     print("\nSua mão:")
     print(jogo.jogador_atual.mao)
 

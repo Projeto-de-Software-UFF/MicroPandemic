@@ -1,9 +1,10 @@
 from typing import List
 from domain.cidade import Cidade
+from domain.jogador import Jogador
 
-def viewMap(cidades: List[Cidade]):
+def viewMap(cidades: List[Cidade], jogadores: List[Jogador]):
     """
-    Exibe o mapa do jogo, mostrando as cidades, suas conexões e estado atual.
+    Exibe o mapa do jogo, mostrando as cidades, suas conexões, estado atual e a posição dos jogadores.
     """
     print("\n" + "="*15 + " MAPA DO MUNDO " + "="*15)
     
@@ -11,6 +12,11 @@ def viewMap(cidades: List[Cidade]):
         # Detalhes da cidade
         print(f"\n--- {cidade.nome.upper()} ---")
         
+        # Jogadores na cidade
+        jogadores_na_cidade = [j.nome for j in jogadores if j.posicao == cidade]
+        if jogadores_na_cidade:
+            print(f"  [P] Jogadores: {', '.join(jogadores_na_cidade)}")
+
         # Centro de Pesquisa
         if cidade.tem_centro_pesquisa:
             print("  [+] Possui Centro de Pesquisa")
