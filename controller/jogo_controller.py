@@ -122,11 +122,11 @@ class Jogo:
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
 
         if config.DRAW_CARDS_AT_START_OF_TURN:
-            self.comprar_cartas_fase()
+            self.executar_fases_fim_turno()
 
         self.verificar_condicoes_finais()
 
-    def comprar_cartas_fase(self):
+    def executar_fases_fim_turno():
         print("\n--- Fase de Compra de Cartas ---")
         for _ in range(config.NUM_CARDS_TO_DRAW): # Compra NUM_CARDS_TO_DRAW cartas
             if self.baralho.esta_vazio():
@@ -143,6 +143,7 @@ class Jogo:
             else:
                 self.jogador_atual.mao.adicionar_carta(carta)
         
+        # Fase de Infecção
         if not self._infeccao_bloqueada:
             if self._turn_count % config.INFECTION_PHASE_FREQUENCY == 0:
                 for _ in range(config.INFECTIONS_PER_PHASE):

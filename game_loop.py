@@ -166,8 +166,7 @@ def main():
                 input("Pressione Enter para continuar...")
 
         # Se acabaram as ações, avança para a próxima fase
-        if not config.DRAW_CARDS_AT_START_OF_TURN and jogo.acoes_restantes <= 0:
-            jogo.comprar_cartas_fase()
+        if jogo.acoes_restantes <= 0:
             if not jogo.game_over:
                 jogo.proximo_turno()
             input("Pressione Enter para iniciar o próximo turno...")
