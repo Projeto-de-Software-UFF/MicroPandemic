@@ -1,10 +1,11 @@
 from typing import List
 from domain.carta.carta import Carta
+import config
 
 class Mao:
-    def __init__(self, limite_cartas: int = 7):
+    def __init__(self):
         self._cartas: List[Carta] = []
-        self._limite_cartas = limite_cartas
+        self._limite_cartas = config.MAX_CARDS_IN_HAND
 
     @property
     def cartas(self) -> List[Carta]:

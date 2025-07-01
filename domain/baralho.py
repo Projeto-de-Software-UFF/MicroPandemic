@@ -5,11 +5,11 @@ from domain.carta.tratar_doenca import TratarDoenca
 from domain.carta.descobrir_cura import DescobrirCura
 from domain.carta.teletransporte import Teletransporte
 from domain.carta.mover_jogador import MoverJogador
-
 from domain.carta.bloquearinfeccao import BloquearInfeccao
 from domain.carta.construircentropesquisa import ConstruirCentroPesquisa
 from domain.carta.eventodoenca import EventoDoenca
 from enuns.cor import Cor
+import config
 
 class Baralho:
     def __init__(self):
@@ -19,21 +19,27 @@ class Baralho:
         self.embaralhar()
 
     def _inicializar_baralho(self):
-        # Cartas de Ação (5 de cada, conforme escopo)
-        for _ in range(5):
-            self._cartas.append(Teletransporte())
-            self._cartas.append(ConstruirCentroPesquisa())
-            
-            self._cartas.append(BloquearInfeccao())
-        
-        for _ in range(5): # 5 de cada para TratarDoenca e DescobrirCura
-            self._cartas.append(TratarDoenca(random.choice(list(Cor))))
-            self._cartas.append(DescobrirCura(random.choice(list(Cor))))
-
-        # Cartas de Evento de Doença (2 de cada cor, conforme escopo)
-        for _ in range(2):
-            for cor in Cor:
-                self._cartas.append(EventoDoenca(cor))
+        # Cartas de Ação
+        for card_name, quantity in config.CARD_DISTRIBUTION.items():
+            if card_name == "Teletransporte":
+                for _ in range(quantity):
+                    self._cartas.append(Teletransporte())
+            elif card_name == "ConstruirCentroPesquisa":
+                for _ in range(quantity):
+                    self._cartas.append(ConstruirCentroPesquisa())
+            elif card_name == "BloquearInfeccao":
+                for _ in range(quantity):
+                    self._cartas.append(BloquearInfeccao())
+            elif card_name == "TratarDoenca":
+                for _ in range(quantity):
+                    self._cartas.append(TratarDoenca(random.choice(list(Cor))))
+            elif card_name == "DescobrirCura":
+                for _ in range(quantity):
+                    self._cartas.append(DescobrirCura(random.choice(list(Cor))))
+            elif card_name == "EventoDoenca":
+                for _ in range(quantity):
+                    for cor in Cor:
+                        self._cartas.append(EventoDoenca(cor))
 
     def embaralhar(self):
         random.shuffle(self._cartas)

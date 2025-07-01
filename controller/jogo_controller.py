@@ -8,6 +8,7 @@ from domain.jogador import Jogador
 from enuns.cor import Cor
 from controller.game_map_controller import GameMap
 from domain.carta.carta import Carta
+import config
 
 class Jogo:
     _instancia = None
@@ -20,7 +21,7 @@ class Jogo:
         self.cidades: Dict[str, Cidade] = {}
         self.baralho: Baralho = Baralho()
         self.doencas: Dict[Cor, Doenca] = {}
-        self.acoes_restantes: int = 3
+        self.acoes_restantes: int = config.MAX_ACTIONS_PER_TURN
         self.game_over: bool = False
         self.vitoria: bool = False
         self.jogador_atual_idx: int = 0
@@ -44,7 +45,7 @@ class Jogo:
             self.doencas[cor] = Doenca(cor)
 
         # 2. Criar Cidades e Mapa
-        map_controller = GameMap()
+        map_controller = GameMap(config.NUM_CITIES, config.MAX_NEIGHBORS_PER_CITY)
         self.cidades = {c.nome: c for c in map_controller.getMap()}
         
         # 3. Criar Jogadores
@@ -55,7 +56,7 @@ class Jogo:
         # 4. Distribuir Mãos Iniciais
         from domain.carta.carta import TipoCarta # Import here to avoid circular dependency
         for jogador in self.jogadores:
-            for _ in range(5): # 5 cartas iniciais
+            for _ in range(config.NUM_INITIAL_CARDS): # Usar config.NUM_INITIAL_CARDS
                 carta = self.baralho.comprar_carta()
                 if carta:
                     if carta.tipo == TipoCarta.EPIDEMIA:
@@ -105,14 +106,14 @@ class Jogo:
     def proximo_turno(self):
         # Gerenciar mão do jogador atual
         jogador = self.jogador_atual
-        while len(jogador.mao.cartas) > 7:
+        while len(jogador.mao.cartas) > config.MAX_CARDS_IN_HAND:
             # Na implementação real, o jogador escolheria qual carta descartar
             carta_descartada = jogador.mao.cartas.pop(0) 
             print(f"{jogador.nome} descartou {carta_descartada.nome} por excesso de cartas.")
 
         # Mudar para o próximo jogador
         self.jogador_atual_idx = (self.jogador_atual_idx + 1) % len(self.jogadores)
-        self.acoes_restantes = 3
+        self.acoes_restantes = config.MAX_ACTIONS_PER_TURN
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
         self.verificar_condicoes_finais()
 
