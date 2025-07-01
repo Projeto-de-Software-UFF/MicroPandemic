@@ -126,7 +126,7 @@ class Jogo:
 
     def comprar_cartas_fase(self):
         print("\n--- Fase de Compra de Cartas ---")
-        for _ in range(2): # Compra 2 cartas
+        for _ in range(config.NUM_CARDS_TO_DRAW): # Compra NUM_CARDS_TO_DRAW cartas
             if self.baralho.esta_vazio():
                 print("Derrota! O baralho de jogadores acabou.")
                 self.game_over = True
@@ -142,7 +142,8 @@ class Jogo:
                 self.jogador_atual.mao.adicionar_carta(carta)
         
         if not self._infeccao_bloqueada:
-            self.fase_infeccao()
+            for _ in range(config.INFECTION_FREQUENCY):
+                self.fase_infeccao()
         else:
             print("Fase de infecção pulada devido à carta Bloquear Infecção.")
             self._infeccao_bloqueada = False

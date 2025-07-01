@@ -26,3 +26,7 @@ DRAW_CARDS_AT_START_OF_TURN = False # True para início, False para fim
 SHARED_DECK = True # True para deck compartilhado, False para decks separados
 MULTIPLY_DECK_BY_PLAYERS = False # True para multiplicar o deck pelo número de jogadores
 DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pesquisa para descobrir a cura
+
+# Frequência de Eventos e Compra de Cartas
+INFECTION_FREQUENCY = 1 # Quantas vezes a fase de infecção acontece por turno
+NUM_CARDS_TO_DRAW = 2 # Quantas cartas são compradas na fase de compra de cartas
