@@ -1,0 +1,164 @@
+classDiagram
+    title Diagrama de Classes Corrigido - MicroPandemic
+
+    %% Enumeração de Cores
+    class Cor {
+        <<enumeration>>
+        VERMELHA
+        AZUL
+        AMARELA
+        VERDE
+    }
+
+    %% Enumeração de Tipos de Carta
+    class TipoCarta {
+        <<enumeration>>
+        ACAO
+        EVENTO_DOENCA
+    }
+
+    %% Classe Jogo (Singleton) - Orquestrador Central
+    class Jogo {
+        <<singleton>>
+        -instancia : Jogo
+        -jogadores : List~Jogador~
+        -cidades : Map~String, Cidade~
+        -baralho : Baralho
+        -doencas : Map~Cor, Doenca~
+        -acoesRestantes : int
+        -gameOver : boolean
+        +getInstance() : Jogo
+        +inicializarJogo(numJogadores: int) : void
+        +proximoTurno() : void
+        +realizarAcao(jogador: Jogador, carta: Carta) : boolean
+        +verificarVitoria() : boolean
+        +verificarDerrota() : boolean
+        +getJogadorAtual() : Jogador
+        +descobrirCura(cor : Cor) : void
+        +aplicarEventoDoenca() : void
+    }
+
+    %% Classe Baralho - Ajustada para melhor balanceamento
+    class Baralho {
+        -cartas : List~Carta~
+        -descarte : List~Carta~
+        +Baralho()
+        +inicializarBaralho(numCidades: int, numEventosPorCor: int) : void
+        +comprarCarta() : Carta
+        +embaralhar() : void
+        +estaVazio() : boolean
+    }
+
+    %% Classe Cidade - Com sistema de níveis de doença corrigido
+    class Cidade {
+        -nome : String
+        -vizinhas : List~Cidade~
+        -temCentroPesquisa : boolean
+        -niveisDoenca : Map~Cor, Integer~
+        +Cidade(nome : String)
+        +adicionarVizinha(cidade : Cidade) : void
+        +construirCentroPesquisa() : void
+        +adicionarNivelDoenca(cor : Cor, quantidade: int) : void
+        +propagarDoenca(cor : Cor) : void
+        +reduzirNivelDoenca(cor : Cor, quantidade: int) : void
+        +removerTodaDoencaDeCor(cor : Cor) : void
+        +getNivelDoenca(cor: Cor) : int
+    }
+
+    class Jogador {
+        -nome: String
+        -posicao : Cidade
+        -mao : Mao
+        +Jogador(nome: String, posicaoInicial : Cidade)
+        +moverPara(cidade : Cidade) : void
+        +getMao() : Mao
+        +compartilharCarta(outroJogador : Jogador, carta : Carta) : boolean
+    }
+
+    class Mao {
+        -cartas : List~Carta~
+        -limiteCartas : int
+        +Mao()
+        +adicionarCarta(carta : Carta) : boolean
+        +removerCarta(carta : Carta) : boolean
+        +getCartas() : List~Carta~
+        +estaCheia() : boolean
+    }
+
+    class Doenca {
+        -cor : Cor
+        -curada : boolean
+        +Doenca(cor : Cor)
+        +isCurada() : boolean
+        +setCurada(status : boolean) : void
+    }
+
+    %% Hierarquia de Cartas (Polimorfismo)
+    class Carta {
+        <<abstract>>
+        #nome : String
+        #tipo : TipoCarta
+        +ativar(jogo : Jogo, jogador : Jogador)* : void
+    }
+
+    class DescobrirCura {
+        -cor : Cor
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class BloquearInfeccao {
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class TratarDoenca {
+        -cor : Cor
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class Teletransporte {
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class MoverJogador {
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class ConstruirCentroPesquisa {
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class CompartilharCarta {
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+    class EventoDoenca {
+        -cor : Cor
+        +ativar(jogo : Jogo, jogador : Jogador) : void
+    }
+
+    %% Factory para criação de cartas
+    class CartaFactory {
+        <<utility>>
+        +criarCarta(tipo: String, cor: Cor) : Carta
+    }
+
+    %% Relações de Herança
+    Carta <|-- DescobrirCura
+    Carta <|-- BloquearInfeccao
+    Carta <|-- TratarDoenca
+    Carta <|-- EventoDoenca
+    Carta <|-- Teletransporte
+    Carta <|-- MoverJogador
+    Carta <|-- ConstruirCentroPesquisa
+    Carta <|-- CompartilharCarta
+
+    %% Relações de Composição e Agregação
+    Jogo "1" *-- "1" Baralho
+    Jogo "1" *-- "1..4" Jogador
+    Jogo "1" *-- "5" Cidade
+    Jogo "1" *-- "4" Doenca
+    Jogador "1" *-- "1" Mao
+    Mao "1" o-- "0..7" Carta
+    Baralho "1" *-- "*" Carta
+
+    %% Relações de Associação
+    Cidade "1" --> "*" Cidade : vizinha
+    Jogador "1" --> "1" Cidade : posicao
+
+    %% Dependências
+    Carta ..> Jogo : usa
+    Carta ..> Jogador : usa
+    CartaFactory ..> Carta : cria

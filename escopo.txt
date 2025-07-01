@@ -1,0 +1,55 @@
+MicroPandemic - Escopo Final do Projeto
+1. Objetivo do Jogo
+MicroPandemic é um jogo de tabuleiro cooperativo, baseado em turnos, com foco em estratégia e trabalho em equipe. Os jogadores (de 1 a 4) colaboram para conter a proliferação de quatro doenças mortais e descobrir suas curas antes que a situação global saia de controle.
+2. Configuração do Jogo (Inicialização)
+Para iniciar uma partida, o sistema (Jogo) deve executar os seguintes passos:
+ * Criar o Mapa: Gerar um mapa com 5 cidades interconectadas.
+ * Preparar as Doenças: Inicializar as 4 doenças (Vermelha, Azul, Amarela e Verde), todas marcadas como "não curadas".
+ * Montar o Baralho: O Baralho é criado e embaralhado com a seguinte composição recomendada para um jogo balanceado:
+   * Cartas de Ação: 5 cópias de cada um dos 7 tipos de carta de ação (Mover, Teletransporte, Construir, Tratar, Descobrir, Bloquear, Compartilhar), totalizando 35 cartas.
+   * Cartas de Evento de Doença: Para um jogo desafiador, mas justo, recomenda-se incluir 2 cartas de evento para cada cor de doença, totalizando 8 cartas de evento. A quantidade pode ser ajustada para variar a dificuldade.
+ * Distribuir Mãos Iniciais: Cada jogador recebe uma mão inicial de 5 cartas. A mão de cada jogador deve conter pelo menos 1 carta de ação utilizável.
+ * Posicionar Jogadores: Todos os jogadores são posicionados em uma cidade inicial, definida aleatoriamente.
+ * Infecção Inicial: O sistema infeta três cidades distintas no início do jogo. Uma cidade começa com 3 níveis de doenças (distribuídos aleatoriamente entre as 4 cores), outra cidade com 2 níveis, e uma terceira com 1 nível.
+3. Fluxo de Jogo e Turnos
+O jogo prossegue em turnos, com um jogador agindo de cada vez. O turno de um jogador consiste nas seguintes fases:
+ * Realizar Ações: O jogador pode gastar até 3 pontos de ação para executar qualquer combinação das ações disponíveis.
+ * Comprar Cartas: Após gastar suas ações, o jogador compra 1 carta do baralho de jogadores.
+ * Resolver Eventos: Se a carta comprada for uma Carta de Evento de Doença, seu efeito deve ser resolvido imediatamente. A carta de evento é então movida para a pilha de descarte.
+ * Gerenciar a Mão: O jogador pode ter no máximo 7 cartas em sua mão ao final de seu turno. Se tiver mais de 7, deverá descartar o excesso comradp.
+ * Verificar Condições Finais: O estado do jogo é verificado para determinar se as condições de vitória ou derrota foram atingidas.
+ * Passar o Turno: O turno é passado para o próximo jogador.
+4. Ações do Jogador
+Cada ação abaixo custa 1 ponto de ação:
+ * Movimento Básico (Dirigir/Balsa): Mover o jogador para uma cidade adjacente (conectada diretamente no mapa).
+ * Tratar Doença: Reduzir o nível de uma única doença na cidade onde o jogador está.
+   * Se a cura da doença ainda não foi descoberta, remove-se 1 nível da doença.
+   * Se a cura já foi descoberta, removem-se todos os níveis daquela doença na cidade.
+ * Compartilhar Carta: Trocar uma carta com outro jogador. Ambos os jogadores devem estar na mesma cidade para que a troca possa ocorrer.
+ * Usar uma Carta de Ação: Ativar o efeito de uma carta da sua mão. Os efeitos incluem:
+   * Mover Jogador: Move o jogador para uma cidade vizinha.
+   * Teletransporte: Move o jogador para qualquer cidade do mapa.
+   * Descobrir Cura: Requer que o jogador esteja em uma cidade com Centro de Pesquisa para ser ativada. A ativação desta carta descobre a cura para a cor correspondente.
+   * Bloquear Infecção: Impede que os níveis de doença aumentem durante um turno completo do jogo.
+5. Sistema de Cartas
+O jogo possui dois tipos fundamentais de cartas, gerenciadas pelo Baralho:
+ * Cartas de Ação: São as ferramentas dos jogadores. Elas representam ações especiais que podem ser usadas gastando um ponto de ação e incluem cartas como Teletransporte, ConstruirCentroPesquisa, DescobrirCura, entre outras.
+ * Cartas de Evento de Doença: Essas cartas representam o avanço das doenças. Ao serem compradas, seu efeito é imediato (mesmo quando comprada na mão inicial): uma cidade sorteada aleatoriamente recebe +1 nível da doença da cor indicada na carta.
+   * Surto (Outbreak): Se o nível de uma doença específica em uma cidade atingir o nível 3, ocorre um surto. Um nível adicional daquela doença é imediatamente adicionado a cada uma das cidades vizinhas. Isso pode ser um efeito em cadeia.
+6. Condições de Vitória e Derrota
+Condição de Vitória (Cooperativa)
+ * Os jogadores vencem juntos no momento em que a cura para as 4 doenças for descoberta.
+Condições de Derrota (Cooperativa)
+Os jogadores perdem juntos se qualquer uma das seguintes condições for atendida:
+ * Nível Crítico de Doença: Se o nível de qualquer doença em qualquer cidade atingir o valor 7.
+ * Esgotamento do Baralho: Se um jogador precisar comprar uma carta do baralho de jogadores, mas ele estiver vazio.
+7. Resumo de Quantidades
+| Elemento         | Quantidade/Regra      | Observações |
+|------------------|-----------------------|--------------------------------------|
+| Cidades          | 5                     | Conectadas em rede.                  |
+| Doenças          | 4 cores               | Níveis de 0 a 7 em cada cidade.      |
+| Jogadores        | 1 a 4                 | Modo cooperativo.                    |
+| Ações por Turno  | 5                     | Limite fixo por jogador.             |
+| Cartas na Mão    | 5 inicial, 7 máximo   | Limite gerenciado ao final do turno. |
+| Cartas de Ação   | 35 total              | 7 tipos de carta × 5 cópias cada.    |
+| Cartas de Evento | 12 total              | 3 por cor.                           |

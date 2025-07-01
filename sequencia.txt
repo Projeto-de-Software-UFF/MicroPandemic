@@ -1,0 +1,74 @@
+sequenceDiagram
+    participant J as Jogador
+    participant M as Mao
+    participant C as Carta
+    participant G as Jogo
+    participant B as Baralho
+    participant CD as Cidade
+
+    G->>J: Início do seu turno
+    activate J
+
+    Note over J,G: Jogador realiza uma ação (ex: Tratar Doença)
+
+    J->>M: Pega a carta "Tratar Doença"
+    activate M
+    M-->>J: Retorna a carta
+    deactivate M
+
+    J->>G: realizarAcao(jogador, cartaTratar)
+    activate G
+
+    G->>C: ativar(jogo, jogador)
+    activate C
+    C->>J: getPosicao()
+    J-->>C: retorna a Cidade atual
+    C->>CD: reduzirNivelDoenca(cor, 1)
+    activate CD
+    deactivate CD
+    C-->>G: Ação concluída
+    deactivate C
+    G-->>J: Ação realizada com sucesso
+    deactivate G
+
+    Note over J,G: Fim da fase de ações. Jogador compra cartas.
+
+    J->>G: Solicita comprar cartas
+    activate G
+    G->>B: comprarCarta()
+    activate B
+    B-->>G: Retorna Carta 1
+    deactivate B
+    G->>M: adicionarCarta(Carta 1)
+    activate M
+    deactivate M
+
+    G->>B: comprarCarta()
+    activate B
+    B-->>G: Retorna Carta 2
+    deactivate B
+    G->>M: adicionarCarta(Carta 2)
+    activate M
+    deactivate M
+    deactivate G
+
+    Note over J,G: Fase de Infecção
+
+    G->>G: aplicarEventoDoenca()
+    activate G
+    G->>B: comprarCarta() %% Simplificação: compra do baralho de infecção
+    activate B
+    B-->>G: Retorna carta de cidade para infectar
+    deactivate B
+    G->>CD: adicionarNivelDoenca(cor, 1)
+    activate CD
+    Note right of CD: Se o nível chegar a 4, propaga a doença
+    CD->>CD: propagarDoenca(cor)
+    deactivate CD
+    deactivate G
+
+    G->>G: verificarVitoria()
+    G->>G: verificarDerrota()
+
+    G->>J: Fim do turno
+    deactivate J
