@@ -51,18 +51,24 @@ class Jogo:
         self.cidades = {c.nome: c for c in map_controller.getMap()}
         
         # Inicializa o baralho aqui, pois num_jogadores está disponível
-        self.baralho: Baralho = Baralho(num_jogadores)
+        if config.SHARED_DECK:
+            self.baralho: Baralho = Baralho(num_jogadores)
+        else:
+            self.baralho = None # O baralho será por jogador
 
         # 3. Criar Jogadores
         cidade_inicial = random.choice(list(self.cidades.values()))
         for i in range(num_jogadores):
-            self.jogadores.append(Jogador(f"Jogador {i+1}", cidade_inicial))
+            self.jogadores.append(Jogador(f"Jogador {i+1}", cidade_inicial, num_jogadores))
 
         # 4. Distribuir Mãos Iniciais
         from domain.carta.carta import TipoCarta # Import here to avoid circular dependency
         for jogador in self.jogadores:
             for _ in range(config.NUM_INITIAL_CARDS): # Usar config.NUM_INITIAL_CARDS
-                carta = self.baralho.comprar_carta()
+                if config.SHARED_DECK:
+                    carta = self.baralho.comprar_carta()
+                else:
+                    carta = jogador._baralho_pessoal.comprar_carta()
                 if carta:
                     if carta.tipo == TipoCarta.EPIDEMIA:
                         print(f"Carta de Evento de Doença comprada na mão inicial: {carta.nome}. Ativando imediatamente.")
@@ -135,12 +141,18 @@ class Jogo:
     def executar_fases_fim_turno(self):
         print("\n--- Fase de Compra de Cartas ---")
         for _ in range(config.NUM_CARDS_TO_DRAW): # Compra NUM_CARDS_TO_DRAW cartas
-            if self.baralho.esta_vazio():
-                print("Derrota! O baralho de jogadores acabou.")
-                self.game_over = True
-                return
-
-            carta = self.baralho.comprar_carta()
+            if config.SHARED_DECK:
+                if self.baralho.esta_vazio():
+                    print("Derrota! O baralho de jogadores acabou.")
+                    self.game_over = True
+                    return
+                carta = self.baralho.comprar_carta()
+            else:
+                if self.jogador_atual._baralho_pessoal.esta_vazio():
+                    print(f"Derrota! O baralho pessoal de {self.jogador_atual.nome} acabou.")
+                    self.game_over = True
+                    return
+                carta = self.jogador_atual._baralho_pessoal.comprar_carta()
             print(f"{self.jogador_atual.nome} comprou: {carta}")
             
             from domain.carta.carta import TipoCarta # Import here to avoid circular dependency

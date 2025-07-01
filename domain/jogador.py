@@ -1,11 +1,17 @@
 from domain.cidade import Cidade
 from domain.mao import Mao
+from domain.baralho import Baralho
+import config
 
 class Jogador:   
-    def __init__(self, nome: str, posicao: "Cidade"):
+    def __init__(self, nome: str, posicao: "Cidade", num_jogadores: int):
         self._nome = nome
         self._posicao = posicao
         self._mao = Mao()
+        if not config.SHARED_DECK:
+            self._baralho_pessoal = Baralho(num_jogadores)
+        else:
+            self._baralho_pessoal = None # Não usado se o deck for compartilhado
 
     @property
     def nome(self) -> str:
