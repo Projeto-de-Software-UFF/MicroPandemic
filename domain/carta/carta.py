@@ -9,6 +9,7 @@ class TipoCarta(Enum):
     CIDADE = "Cidade"
     EVENTO = "Evento"
     EPIDEMIA = "Epidemia"
+    ACAO = "Ação"
 
 class Carta:
     def __init__(self, nome: str, tipo: TipoCarta):

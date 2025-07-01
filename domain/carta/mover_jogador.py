@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class MoverJogador(Carta):
     def __init__(self):
-        super().__init__("Mover Jogador", TipoCarta.EVENTO)
+        super().__init__("Mover Jogador", TipoCarta.ACAO)
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', cidade_alvo: 'Cidade') -> bool:
         print(f"{jogador.nome} usando Mover Jogador para {cidade_alvo.nome}.")

@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class CompartilharCarta(Carta):
     def __init__(self):
-        super().__init__("Compartilhar Carta", TipoCarta.EVENTO)
+        super().__init__("Compartilhar Carta", TipoCarta.ACAO)
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', outro_jogador: 'Jogador', carta_a_compartilhar: 'Carta') -> bool:
         print(f"{jogador.nome} usando Compartilhar Carta com {outro_jogador.nome}.")

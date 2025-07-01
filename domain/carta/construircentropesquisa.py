@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class ConstruirCentroPesquisa(Carta):
     def __init__(self):
-        super().__init__("Construir Centro de Pesquisa", TipoCarta.EVENTO)
+        super().__init__("Construir Centro de Pesquisa", TipoCarta.ACAO)
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', **kwargs) -> bool:
         print(f"{jogador.nome} está construindo um Centro de Pesquisa em {jogador.posicao.nome}.")

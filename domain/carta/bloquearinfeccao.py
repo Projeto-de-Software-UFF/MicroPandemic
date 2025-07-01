@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class BloquearInfeccao(Carta):
     def __init__(self):
-        super().__init__("Bloquear Infecção", TipoCarta.EVENTO)
+        super().__init__("Bloquear Infecção", TipoCarta.ACAO)
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', **kwargs) -> bool:
         print(f"{jogador.nome} ativou Bloquear Infecção.")

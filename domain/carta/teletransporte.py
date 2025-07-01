@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Teletransporte(Carta):
     def __init__(self):
-        super().__init__("Teletransporte", TipoCarta.EVENTO)
+        super().__init__("Teletransporte", TipoCarta.ACAO)
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', cidade_alvo: 'Cidade') -> bool:
         print(f"{jogador.nome} usando Teletransporte para {cidade_alvo.nome}.")

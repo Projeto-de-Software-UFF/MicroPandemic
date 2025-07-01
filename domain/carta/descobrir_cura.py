@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class DescobrirCura(Carta):
     def __init__(self, cor: Cor):
-        super().__init__(f"Descobrir Cura {cor.name.capitalize()}", TipoCarta.EVENTO)
+        super().__init__(f"Descobrir Cura {cor.name.capitalize()}", TipoCarta.ACAO)
         self._cor = cor
 
     @property
