@@ -36,11 +36,13 @@ class Cidade:
 
     def adicionar_nivel_doenca(self, cor: Cor, quantidade: int):
         nivel_atual = self._niveis_doenca.get(cor, 0)
-        if nivel_atual + quantidade >= 3:
-            self._niveis_doenca[cor] = 3
+        novo_nivel = nivel_atual + quantidade
+
+        if novo_nivel > 3:
+            self._niveis_doenca[cor] = 3 # Max 3 cubes per city
             self.propagar_doenca(cor)
         else:
-            self._niveis_doenca[cor] = nivel_atual + quantidade
+            self._niveis_doenca[cor] = novo_nivel
 
     def propagar_doenca(self, cor: Cor):
         print(f"SURTO em {self.nome} com a doença {cor.name}!")

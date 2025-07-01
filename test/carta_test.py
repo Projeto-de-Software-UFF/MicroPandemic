@@ -2,7 +2,8 @@
 import pytest
 from domain.carta.carta import Carta, TipoCarta
 from domain.carta.eventodoenca import EventoDoenca
-from domain.carta.construircentropesquisa import Construircentropesquisa
+from domain.carta.construircentropesquisa import ConstruirCentroPesquisa
+from enuns.cor import Cor
 
 # Teste básico para a classe Carta com tipo CIDADE
 def test_carta_cidade_repr():
@@ -16,23 +17,23 @@ def test_carta_evento_repr():
 
 # Teste para verificar se Eventodoenca guarda a cor corretamente
 def test_evento_doenca_tem_cor():
-    evento = EventoDoenca(cor="vermelho")
-    assert evento.cor == "vermelho"
+    evento = EventoDoenca(cor=Cor.VERMELHO)
+    assert evento.cor == Cor.VERMELHO
 
 # Teste para verificar se Construircentropesquisa guarda o nome corretamente
 def test_construir_centro_pesquisa_nome():
-    centro = Construircentropesquisa("Paris")
+    centro = ConstruirCentroPesquisa()
     assert centro.nome == "Paris"
     
 # Teste para garantir que Construircentropesquisa é uma subclasse de Carta e tem tipo correto
 def test_construircentropesquisa_herda_carta():
-    carta = Construircentropesquisa("Atlanta")
+    carta = ConstruirCentroPesquisa()
     assert isinstance(carta, Carta)
     assert carta.tipo == TipoCarta.CIDADE
 
 # Teste para garantir que Eventodoenca é uma subclasse de Carta e tem tipo correto
 def test_eventodoenca_herda_carta():
-    carta = EventoDoenca("azul")
+    carta = EventoDoenca(Cor.AZUL)
     assert isinstance(carta, Carta)
     # Pode ser TipoCarta.EPIDEMIA ou TipoCarta.EVENTO dependendo da sua definição
     assert carta.tipo == TipoCarta.EPIDEMIA or carta.tipo == TipoCarta.EVENTO
