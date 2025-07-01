@@ -7,7 +7,7 @@ from domain.doenca import Doenca
 from domain.jogador import Jogador
 from enuns.cor import Cor
 from controller.game_map_controller import GameMap
-from domain.carta.carta import Carta
+
 import config
 
 class Jogo:
@@ -155,7 +155,7 @@ class Jogo:
                 carta = self.jogador_atual._baralho_pessoal.comprar_carta()
             print(f"{self.jogador_atual.nome} comprou: {carta}")
             
-            from domain.carta.carta import TipoCarta # Import here to avoid circular dependency
+
             if carta.tipo == TipoCarta.EPIDEMIA:
                 carta.ativar(self, self.jogador_atual)
             else:

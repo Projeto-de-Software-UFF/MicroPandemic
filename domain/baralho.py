@@ -4,7 +4,7 @@ from domain.carta.carta import Carta
 from domain.carta.tratar_doenca import TratarDoenca
 from domain.carta.descobrir_cura import DescobrirCura
 from domain.carta.teletransporte import Teletransporte
-from domain.carta.mover_jogador import MoverJogador
+
 from domain.carta.bloquearinfeccao import BloquearInfeccao
 from domain.carta.construircentropesquisa import ConstruirCentroPesquisa
 from domain.carta.eventodoenca import EventoDoenca
