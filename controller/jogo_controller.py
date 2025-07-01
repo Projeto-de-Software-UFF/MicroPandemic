@@ -126,7 +126,7 @@ class Jogo:
 
         self.verificar_condicoes_finais()
 
-    def executar_fases_fim_turno():
+    def executar_fases_fim_turno(self):
         print("\n--- Fase de Compra de Cartas ---")
         for _ in range(config.NUM_CARDS_TO_DRAW): # Compra NUM_CARDS_TO_DRAW cartas
             if self.baralho.esta_vazio():
