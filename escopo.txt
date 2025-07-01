@@ -49,7 +49,7 @@ Os jogadores perdem juntos se qualquer uma das seguintes condições for atendid
 | Cidades          | 5                     | Conectadas em rede.                  |
 | Doenças          | 4 cores               | Níveis de 0 a 7 em cada cidade.      |
 | Jogadores        | 1 a 4                 | Modo cooperativo.                    |
-| Ações por Turno  | 5                     | Limite fixo por jogador.             |
+| Ações por Turno  | 3                     | Limite fixo por jogador.             |
 | Cartas na Mão    | 5 inicial, 7 máximo   | Limite gerenciado ao final do turno. |
 | Cartas de Ação   | 35 total              | 7 tipos de carta × 5 cópias cada.    |
 | Cartas de Evento | 12 total              | 3 por cor.                           |
