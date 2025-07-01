@@ -20,3 +20,9 @@ CARD_DISTRIBUTION = {
 # Limites do Jogador
 MAX_CARDS_IN_HAND = 7
 NUM_INITIAL_CARDS = 5
+
+# Novas Configurações de Regras
+DRAW_CARDS_AT_START_OF_TURN = False # True para início, False para fim
+SHARED_DECK = True # True para deck compartilhado, False para decks separados
+MULTIPLY_DECK_BY_PLAYERS = False # True para multiplicar o deck pelo número de jogadores
+DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pesquisa para descobrir a cura

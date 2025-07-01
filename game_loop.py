@@ -3,6 +3,7 @@ from terminal_view.menu import menu
 from terminal_view.painel import painel
 from terminal_view.view_map import viewMap
 from controller.jogo_controller import Jogo
+import config
 
 def exibir_estado_jogo(jogo: Jogo):
     """Função auxiliar para exibir o estado atual do jogo."""
@@ -20,8 +21,8 @@ def main():
     # --- Configuração Inicial ---
     jogo = Jogo.get_instancia()
     try:
-        num_jogadores = int(input("Digite o número de jogadores (1-4): "))
-        if not 1 <= num_jogadores <= 4:
+        num_jogadores = int(input(f"Digite o número de jogadores (1-{config.MAX_PLAYERS}): "))
+        if not 1 <= num_jogadores <= config.MAX_PLAYERS:
             raise ValueError
     except ValueError:
         print("Número inválido. Iniciando com 1 jogador.")
@@ -34,6 +35,19 @@ def main():
         exibir_estado_jogo(jogo)
         
         jogador = jogo.jogador_atual
+
+        # Logic for drawing cards based on config
+        if config.DRAW_CARDS_AT_START_OF_TURN:
+            # If cards are drawn at the start of the turn, the drawing phase already occurred in proximo_turno
+            pass
+        else:
+            # If cards are drawn at the end of the turn, check if actions are over to start the drawing phase
+            if jogo.acoes_restantes <= 0:
+                jogo.comprar_cartas_fase()
+                if not jogo.game_over:
+                    jogo.proximo_turno()
+                input("Pressione Enter para iniciar o próximo turno...")
+                continue # Skip the rest of the loop for the next turn
 
         if jogo.acoes_restantes > 0:
             menu()
@@ -64,10 +78,6 @@ def main():
                             print(f"{i+1}. {cidade.nome}")
                         cidade_idx = int(input("Digite o número da cidade: ")) - 1
                         kwargs["cidade_alvo"] = list(jogo.cidades.values())[cidade_idx]
-
-                    
-
-                    
 
                     elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):
                         kwargs["cor"] = carta_selecionada.cor
@@ -156,7 +166,7 @@ def main():
                 input("Pressione Enter para continuar...")
 
         # Se acabaram as ações, avança para a próxima fase
-        if jogo.acoes_restantes <= 0:
+        if not config.DRAW_CARDS_AT_START_OF_TURN and jogo.acoes_restantes <= 0:
             jogo.comprar_cartas_fase()
             if not jogo.game_over:
                 jogo.proximo_turno()

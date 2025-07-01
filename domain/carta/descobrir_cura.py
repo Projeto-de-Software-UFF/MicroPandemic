@@ -1,6 +1,7 @@
 from domain.carta.carta import Carta, TipoCarta
 from enuns.cor import Cor
 from typing import TYPE_CHECKING
+import config
 
 if TYPE_CHECKING:
     from controller.jogo_controller import Jogo
@@ -16,12 +17,12 @@ class DescobrirCura(Carta):
         return self._cor
 
     def ativar(self, jogo: 'Jogo', jogador: 'Jogador', **kwargs) -> bool:
-        if jogador.posicao.tem_centro_pesquisa:
-            print(f"{jogador.nome} está tentando descobrir a cura para a doença {self.cor.name}.")
-            # Lógica para verificar se o jogador tem as cartas necessárias para descobrir a cura
-            # Por simplicidade, aqui apenas marca como curada se estiver em centro de pesquisa
-            jogo.descobrir_cura(self.cor)
-            return True
-        else:
+        if config.DISCOVER_CURE_REQUIRES_RESEARCH_CENTER and not jogador.posicao.tem_centro_pesquisa:
             print("Você precisa estar em um Centro de Pesquisa para descobrir a cura.")
             return False
+        
+        print(f"{jogador.nome} está tentando descobrir a cura para a doença {self.cor.name}.")
+        # Lógica para verificar se o jogador tem as cartas necessárias para descobrir a cura
+        # Por simplicidade, aqui apenas marca como curada se estiver em centro de pesquisa
+        jogo.descobrir_cura(self.cor)
+        return True

@@ -19,7 +19,7 @@ class Jogo:
         
         self.jogadores: List[Jogador] = []
         self.cidades: Dict[str, Cidade] = {}
-        self.baralho: Baralho = Baralho()
+        self.baralho: Baralho = Baralho(num_jogadores)
         self.doencas: Dict[Cor, Doenca] = {}
         self.acoes_restantes: int = config.MAX_ACTIONS_PER_TURN
         self.game_over: bool = False
@@ -115,13 +115,15 @@ class Jogo:
         self.jogador_atual_idx = (self.jogador_atual_idx + 1) % len(self.jogadores)
         self.acoes_restantes = config.MAX_ACTIONS_PER_TURN
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
-        self.verificar_condicoes_finais()
 
-    
+        if config.DRAW_CARDS_AT_START_OF_TURN:
+            self.comprar_cartas_fase()
+
+        self.verificar_condicoes_finais()
 
     def comprar_cartas_fase(self):
         print("\n--- Fase de Compra de Cartas ---")
-        for _ in range(2): # Compra 2 cartas no final do turno
+        for _ in range(2): # Compra 2 cartas
             if self.baralho.esta_vazio():
                 print("Derrota! O baralho de jogadores acabou.")
                 self.game_over = True

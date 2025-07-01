@@ -12,32 +12,29 @@ from enuns.cor import Cor
 import config
 
 class Baralho:
-    def __init__(self):
+    def __init__(self, num_jogadores: int = 1):
         self._cartas: List[Carta] = []
         self._descarte: List[Carta] = []
-        self._inicializar_baralho()
+        self._inicializar_baralho(num_jogadores)
         self.embaralhar()
 
-    def _inicializar_baralho(self):
+    def _inicializar_baralho(self, num_jogadores: int):
+        multiplicador = num_jogadores if config.MULTIPLY_DECK_BY_PLAYERS else 1
+
         # Cartas de Ação
         for card_name, quantity in config.CARD_DISTRIBUTION.items():
-            if card_name == "Teletransporte":
-                for _ in range(quantity):
+            for _ in range(quantity * multiplicador):
+                if card_name == "Teletransporte":
                     self._cartas.append(Teletransporte())
-            elif card_name == "ConstruirCentroPesquisa":
-                for _ in range(quantity):
+                elif card_name == "ConstruirCentroPesquisa":
                     self._cartas.append(ConstruirCentroPesquisa())
-            elif card_name == "BloquearInfeccao":
-                for _ in range(quantity):
+                elif card_name == "BloquearInfeccao":
                     self._cartas.append(BloquearInfeccao())
-            elif card_name == "TratarDoenca":
-                for _ in range(quantity):
+                elif card_name == "TratarDoenca":
                     self._cartas.append(TratarDoenca(random.choice(list(Cor))))
-            elif card_name == "DescobrirCura":
-                for _ in range(quantity):
+                elif card_name == "DescobrirCura":
                     self._cartas.append(DescobrirCura(random.choice(list(Cor))))
-            elif card_name == "EventoDoenca":
-                for _ in range(quantity):
+                elif card_name == "EventoDoenca":
                     for cor in Cor:
                         self._cartas.append(EventoDoenca(cor))
 
