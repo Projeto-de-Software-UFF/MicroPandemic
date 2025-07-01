@@ -67,7 +67,22 @@ def main():
 
                     
 
-                    elif carta_selecionada.nome == "Compartilhar Carta":                        if len(jogo.jogadores) <= 1:                            print("Não é possível compartilhar cartas com apenas um jogador.")                            sucesso = False                        else:                            print("\nEscolha o jogador para compartilhar a carta:")                            for i, p in enumerate(jogo.jogadores):                                if p != jogador:                                    print(f"{i+1}. {p.nome}")                            jogador_idx = int(input("Digite o número do jogador: ")) - 1                            kwargs["outro_jogador"] = jogo.jogadores[jogador_idx]                            print("\nEscolha a carta para compartilhar:")                            print(jogador.mao)                            carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1                            kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]
+                    elif carta_selecionada.nome == "Compartilhar Carta":
+                        if len(jogo.jogadores) <= 1:
+                            print("Não é possível compartilhar cartas com apenas um jogador.")
+                            sucesso = False
+                        else:
+                            print("\nEscolha o jogador para compartilhar a carta:")
+                            for i, p in enumerate(jogo.jogadores):
+                                if p != jogador:
+                                    print(f"{i+1}. {p.nome}")
+                            jogador_idx = int(input("Digite o número do jogador: ")) - 1
+                            kwargs["outro_jogador"] = jogo.jogadores[jogador_idx]
+
+                            print("\nEscolha a carta para compartilhar:")
+                            print(jogador.mao)
+                            carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1
+                            kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]
 
                     elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):
                         kwargs["cor"] = carta_selecionada.cor
