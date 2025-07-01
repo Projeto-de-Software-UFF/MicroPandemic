@@ -30,3 +30,4 @@ DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pe
 # Frequência de Eventos e Compra de Cartas
 INFECTION_PHASE_FREQUENCY = 1 # De quanto em quantos turnos há uma fase de infecção
 INFECTIONS_PER_PHASE = 1 # Quantas infecções ocorrem na fase de infecção
+NUM_CARDS_TO_DRAW = 2 # Quantas cartas são compradas na fase de compra de cartas
