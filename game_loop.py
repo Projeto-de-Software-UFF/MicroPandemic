@@ -65,13 +65,7 @@ def main():
                         cidade_idx = int(input("Digite o número da cidade: ")) - 1
                         kwargs["cidade_alvo"] = list(jogo.cidades.values())[cidade_idx]
 
-                    elif carta_selecionada.nome == "Mover Jogador":
-                        print("\nEscolha a cidade vizinha de destino:")
-                        vizinhas = jogador.posicao.vizinhas
-                        for i, cidade in enumerate(vizinhas):
-                            print(f"{i+1}. {cidade.nome}")
-                        cidade_idx = int(input("Digite o número da cidade: ")) - 1
-                        kwargs["cidade_alvo"] = vizinhas[cidade_idx]
+                    
 
                     elif carta_selecionada.nome == "Compartilhar Carta":
                         print("\nEscolha o jogador para compartilhar a carta:")

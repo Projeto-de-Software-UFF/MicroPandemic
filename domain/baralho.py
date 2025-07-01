@@ -22,7 +22,6 @@ class Baralho:
         # Cartas de Ação (5 de cada, conforme escopo)
         for _ in range(5):
             self._cartas.append(Teletransporte())
-            self._cartas.append(MoverJogador())
             self._cartas.append(ConstruirCentroPesquisa())
             self._cartas.append(CompartilharCarta())
             self._cartas.append(BloquearInfeccao())
