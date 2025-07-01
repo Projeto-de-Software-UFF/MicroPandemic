@@ -65,7 +65,34 @@ def main():
                         cidade_idx = int(input("Digite o número da cidade: ")) - 1
                         kwargs["cidade_alvo"] = list(jogo.cidades.values())[cidade_idx]
 
-                    elif carta_selecionada.nome == "Mover Jogador":                        print("\nEscolha a cidade vizinha de destino:")                        vizinhas = jogador.posicao.vizinhas                        for i, cidade in enumerate(vizinhas):                            print(f"{i+1}. {cidade.nome}")                        cidade_idx = int(input("Digite o número da cidade: ")) - 1                        kwargs["cidade_alvo"] = vizinhas[cidade_idx]                    elif carta_selecionada.nome == "Compartilhar Carta":                        print("\nEscolha o jogador para compartilhar a carta:")                        for i, p in enumerate(jogo.jogadores):                            if p != jogador:                                print(f"{i+1}. {p.nome}")                        jogador_idx = int(input("Digite o número do jogador: ")) - 1                        kwargs["outro_jogador"] = jogo.jogadores[jogador_idx]                        print("\nEscolha a carta para compartilhar:")                        print(jogador.mao)                        carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1                        kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]                    elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):                        print("\nEscolha a cor da doença:")                        from enuns.cor import Cor # Import inside function for lazy loading                        for i, cor in enumerate(Cor):                            print(f"{i+1}. {cor.name}")                        cor_idx = int(input("Digite o número da cor: ")) - 1                        kwargs["cor"] = list(Cor)[cor_idx]
+                    elif carta_selecionada.nome == "Mover Jogador":
+                        print("\nEscolha a cidade vizinha de destino:")
+                        vizinhas = jogador.posicao.vizinhas
+                        for i, cidade in enumerate(vizinhas):
+                            print(f"{i+1}. {cidade.nome}")
+                        cidade_idx = int(input("Digite o número da cidade: ")) - 1
+                        kwargs["cidade_alvo"] = vizinhas[cidade_idx]
+
+                    elif carta_selecionada.nome == "Compartilhar Carta":
+                        print("\nEscolha o jogador para compartilhar a carta:")
+                        for i, p in enumerate(jogo.jogadores):
+                            if p != jogador:
+                                print(f"{i+1}. {p.nome}")
+                        jogador_idx = int(input("Digite o número do jogador: ")) - 1
+                        kwargs["outro_jogador"] = jogo.jogadores[jogador_idx]
+
+                        print("\nEscolha a carta para compartilhar:")
+                        print(jogador.mao)
+                        carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1
+                        kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]
+
+                    elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):
+                        print("\nEscolha a cor da doença:")
+                        from enuns.cor import Cor # Import inside function for lazy loading
+                        for i, cor in enumerate(Cor):
+                            print(f"{i+1}. {cor.name}")
+                        cor_idx = int(input("Digite o número da cor: ")) - 1
+                        kwargs["cor"] = list(Cor)[cor_idx]
 
                     # Ação de Ativar a Carta
                     sucesso = carta_selecionada.ativar(jogo, jogador, **kwargs)
