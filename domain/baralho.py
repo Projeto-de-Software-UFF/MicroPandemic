@@ -26,9 +26,10 @@ class Baralho:
             self._cartas.append(ConstruirCentroPesquisa())
             self._cartas.append(CompartilharCarta())
             self._cartas.append(BloquearInfeccao())
-            for cor in Cor:
-                self._cartas.append(TratarDoenca(cor))
-                self._cartas.append(DescobrirCura(cor))
+        
+        for _ in range(5): # 5 de cada para TratarDoenca e DescobrirCura
+            self._cartas.append(TratarDoenca(random.choice(list(Cor))))
+            self._cartas.append(DescobrirCura(random.choice(list(Cor))))
 
         # Cartas de Evento de Doença (2 de cada cor, conforme escopo)
         for _ in range(2):
