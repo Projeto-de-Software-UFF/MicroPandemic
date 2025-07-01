@@ -11,7 +11,8 @@ def exibir_estado_jogo(jogo: Jogo):
     painel(
         acoes_restantes=jogo.acoes_restantes,
         jogador_atual=jogo.jogador_atual,
-        curas_descobertas=[cor.name for cor, doenca in jogo.doencas.items() if doenca.curada]
+        curas_descobertas=[cor.name for cor, doenca in jogo.doencas.items() if doenca.curada],
+        cartas_restantes_deck=len(jogo.baralho)
     )
     viewMap(list(jogo.cidades.values()), jogo.jogadores)
     print("\nSua mão:")
