@@ -25,12 +25,11 @@ Cada ação abaixo custa 1 ponto de ação:
  * Tratar Doença: Reduzir o nível de uma única doença na cidade onde o jogador está.
    * Se a cura da doença ainda não foi descoberta, remove-se 1 nível da doença.
    * Se a cura já foi descoberta, removem-se todos os níveis daquela doença na cidade.
- * Compartilhar Carta: Trocar uma carta com outro jogador. Ambos os jogadores devem estar na mesma cidade para que a troca possa ocorrer.
+   * Compartilhar Carta: Trocar uma carta com outro jogador. Ambos os jogadores devem estar na mesma cidade para que a troca possa ocorrer. Um jogador só pode compartilhar uma carta por turno.
  * Usar uma Carta de Ação: Ativar o efeito de uma carta da sua mão. Os efeitos incluem:
-   * Mover Jogador: Move o jogador para uma cidade vizinha.
    * Teletransporte: Move o jogador para qualquer cidade do mapa.
    * Descobrir Cura: Requer que o jogador esteja em uma cidade com Centro de Pesquisa para ser ativada. A ativação desta carta descobre a cura para a cor correspondente.
-   * Bloquear Infecção: Impede que os níveis de doença aumentem durante um turno completo do jogo.
+   * Bloquear Infecção: Impede que os níveis de doença na cidade atual aumentem durante dois turnos completos do jogo.
 5. Sistema de Cartas
 O jogo possui dois tipos fundamentais de cartas, gerenciadas pelo Baralho:
  * Cartas de Ação: São as ferramentas dos jogadores. Elas representam ações especiais que podem ser usadas gastando um ponto de ação e incluem cartas como Teletransporte, ConstruirCentroPesquisa, DescobrirCura, entre outras.

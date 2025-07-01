@@ -5,7 +5,7 @@ from domain.carta.tratar_doenca import TratarDoenca
 from domain.carta.descobrir_cura import DescobrirCura
 from domain.carta.teletransporte import Teletransporte
 from domain.carta.mover_jogador import MoverJogador
-from domain.carta.compartilhar_carta import CompartilharCarta
+
 from domain.carta.bloquearinfeccao import BloquearInfeccao
 from domain.carta.construircentropesquisa import ConstruirCentroPesquisa
 from domain.carta.eventodoenca import EventoDoenca
@@ -23,7 +23,7 @@ class Baralho:
         for _ in range(5):
             self._cartas.append(Teletransporte())
             self._cartas.append(ConstruirCentroPesquisa())
-            self._cartas.append(CompartilharCarta())
+            
             self._cartas.append(BloquearInfeccao())
         
         for _ in range(5): # 5 de cada para TratarDoenca e DescobrirCura

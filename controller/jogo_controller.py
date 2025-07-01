@@ -7,6 +7,7 @@ from domain.doenca import Doenca
 from domain.jogador import Jogador
 from enuns.cor import Cor
 from controller.game_map_controller import GameMap
+from domain.carta.carta import Carta
 
 class Jogo:
     _instancia = None
@@ -85,6 +86,21 @@ class Jogo:
         else:
             print(f"Movimento inválido: {cidade_destino.nome} não é vizinha de {jogador.posicao.nome}.")
             return False
+
+    def compartilhar_carta_acao(self, jogador_origem: Jogador, jogador_destino: Jogador, carta_a_compartilhar: Carta) -> bool:
+        if self.acoes_restantes <= 0:
+            print("Sem ações restantes.")
+            return False
+        
+        if len(self.jogadores) < 2:
+            print("Não há outros jogadores para compartilhar cartas.")
+            return False
+
+        if jogador_origem.compartilhar_carta(jogador_destino, carta_a_compartilhar):
+            self.acoes_restantes -= 1
+            print(f"Compartilhamento realizado. Ações restantes: {self.acoes_restantes}")
+            return True
+        return False
 
     def proximo_turno(self):
         # Gerenciar mão do jogador atual

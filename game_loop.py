@@ -67,22 +67,7 @@ def main():
 
                     
 
-                    elif carta_selecionada.nome == "Compartilhar Carta":
-                        if len(jogo.jogadores) <= 1:
-                            print("Não é possível compartilhar cartas com apenas um jogador.")
-                            sucesso = False
-                        else:
-                            print("\nEscolha o jogador para compartilhar a carta:")
-                            for i, p in enumerate(jogo.jogadores):
-                                if p != jogador:
-                                    print(f"{i+1}. {p.nome}")
-                            jogador_idx = int(input("Digite o número do jogador: ")) - 1
-                            kwargs["outro_jogador"] = jogo.jogadores[jogador_idx]
-
-                            print("\nEscolha a carta para compartilhar:")
-                            print(jogador.mao)
-                            carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1
-                            kwargs["carta_a_compartilhar"] = jogador.mao.cartas[carta_compartilhar_idx]
+                    
 
                     elif carta_selecionada.nome.startswith("Tratar Doença") or carta_selecionada.nome.startswith("Descobrir Cura"):
                         kwargs["cor"] = carta_selecionada.cor
@@ -125,7 +110,44 @@ def main():
                 
                 input("Pressione Enter para continuar...")
 
-            elif opcao == '3': # Passar turno
+            elif opcao == '3': # Compartilhar Carta
+                if len(jogo.jogadores) <= 1:
+                    print("Não é possível compartilhar cartas com apenas um jogador.")
+                    input("Pressione Enter para continuar...")
+                    continue
+                
+                if not jogador.mao.cartas:
+                    print("Sua mão está vazia. Nenhuma carta para compartilhar.")
+                    input("Pressione Enter para continuar...")
+                    continue
+
+                try:
+                    print("\nEscolha o jogador para compartilhar a carta:")
+                    jogadores_disponiveis = [p for p in jogo.jogadores if p != jogador]
+                    for i, p in enumerate(jogadores_disponiveis):
+                        print(f"{i+1}. {p.nome}")
+                    
+                    jogador_idx = int(input("Digite o número do jogador: ")) - 1
+                    outro_jogador = jogadores_disponiveis[jogador_idx]
+
+                    print("\nEscolha a carta para compartilhar:")
+                    print(jogador.mao)
+                    carta_compartilhar_idx = int(input("Digite o número da carta: ")) - 1
+                    carta_a_compartilhar = jogador.mao.cartas[carta_compartilhar_idx]
+
+                    sucesso = jogo.compartilhar_carta_acao(jogador, outro_jogador, carta_a_compartilhar)
+
+                    if sucesso:
+                        print("Carta compartilhada com sucesso!")
+                    else:
+                        print("Não foi possível compartilhar a carta.")
+
+                except (ValueError, IndexError):
+                    print("Seleção inválida.")
+                
+                input("Pressione Enter para continuar...")
+
+            elif opcao == '4': # Passar turno
                 print("Você escolheu passar as ações restantes.")
                 jogo.acoes_restantes = 0
 
