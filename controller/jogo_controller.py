@@ -52,11 +52,16 @@ class Jogo:
             self.jogadores.append(Jogador(f"Jogador {i+1}", cidade_inicial))
 
         # 4. Distribuir Mãos Iniciais
+        from domain.carta.carta import TipoCarta # Import here to avoid circular dependency
         for jogador in self.jogadores:
             for _ in range(5): # 5 cartas iniciais
                 carta = self.baralho.comprar_carta()
                 if carta:
-                    jogador.mao.adicionar_carta(carta)
+                    if carta.tipo == TipoCarta.EPIDEMIA:
+                        print(f"Carta de Evento de Doença comprada na mão inicial: {carta.nome}. Ativando imediatamente.")
+                        carta.ativar(self, jogador) # Event cards activate on draw
+                    else:
+                        jogador.mao.adicionar_carta(carta)
 
         # 5. Infecção Inicial
         for i in range(3, 0, -1): # 3, 2, 1 níveis de infecção
