@@ -110,7 +110,6 @@ class Jogo:
             jogador.mover_para(cidade_destino)
             self.acoes_restantes -= 1
             print(f"Movimento realizado. Ações restantes: {self.acoes_restantes}")
-            self._clear_terminal()
             return True
         else:
             print(f"Movimento inválido: {cidade_destino.nome} não é vizinha de {jogador.posicao.nome}.")
