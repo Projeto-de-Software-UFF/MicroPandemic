@@ -9,12 +9,12 @@ MAX_NEIGHBORS_PER_CITY = 3 # Um valor razoável para um mapa pequeno
 # Distribuição de Cartas no Baralho
 # Formato: { "NomeDaCarta": Quantidade }
 CARD_DISTRIBUTION = {
-    "Teletransporte": 5,
-    "ConstruirCentroPesquisa": 5,
-    "BloquearInfeccao": 5,
-    "TratarDoenca": 5,
-    "DescobrirCura": 5,
-    "EventoDoenca": 2 # Por cor, então 2 * 4 cores = 8 cartas de evento
+    "Teletransporte": 6,
+    "ConstruirCentroPesquisa": 6,
+    "BloquearInfeccao": 6,
+    "TratarDoenca": 6,
+    "DescobrirCura": 6,
+    "EventoDoenca": 3 # Por cor, então X * 4 cartas de evento
 }
 
 # Limites do Jogador
@@ -31,6 +31,9 @@ DISCOVER_CURE_REQUIRES_RESEARCH_CENTER = True # True se precisar de centro de pe
 INFECTION_PHASE_FREQUENCY = 1 # De quanto em quantos turnos há uma fase de infecção
 INFECTIONS_PER_PHASE = 1 # Quantas infecções ocorrem na fase de infecção
 NUM_CARDS_TO_DRAW = 2 # Quantas cartas são compradas na fase de compra de cartas
+
+# Configurações de Infecção Inicial
+DISTRIBUTE_INITIAL_INFECTION_BY_COLOR = True # Se True, a infecção inicial distribui níveis de doença por cor; se False, adiciona todos os níveis de uma vez.
 
 # Limites de Ações Específicas
 MAX_SHARE_CARD_ACTIONS_PER_TURN = 1 # Quantidade máxima de vezes que um jogador pode usar a ação de compartilhar carta por turno
