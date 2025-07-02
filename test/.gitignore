@@ -27,3 +27,4 @@ Thumbs.db
 
 # My custom files
 commit_message.txt
+.pytest_cache/
