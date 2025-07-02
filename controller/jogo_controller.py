@@ -82,7 +82,7 @@ class Jogo:
         for i in range(3, 0, -1): # 3, 2, 1 níveis de infecção
             cidade_infectada = random.choice(list(self.cidades.values()))
             cor_aleatoria = random.choice(list(Cor))
-            cidade_infectada.adicionar_nivel_doenca(cor_aleatoria, i)
+            cidade_infectada.adicionar_nivel_doenca(cor_aleatoria, i, set())
             print(f"Infecção inicial: {cidade_infectada.nome} com {i} nível(is) de doença {cor_aleatoria.name}.")
 
         print("\nJogo iniciado!")
@@ -179,7 +179,7 @@ class Jogo:
         cidade_a_infectar = random.choice(list(self.cidades.values()))
         cor_infeccao = random.choice(list(Cor))
         print(f"A cidade {cidade_a_infectar.nome} será infectada com a doença {cor_infeccao.name}.")
-        cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1)
+        cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1, set())
 
 
     def descobrir_cura(self, cor: Cor):
@@ -190,7 +190,7 @@ class Jogo:
 
     def aplicar_evento_doenca(self, cor: Cor):
         cidade_infectada = random.choice(list(self.cidades.values()))
-        cidade_infectada.adicionar_nivel_doenca(cor, 1)
+        cidade_infectada.adicionar_nivel_doenca(cor, 1, set())
         print(f"EVENTO: {cidade_infectada.nome} teve o nível da doença {cor.name} aumentado.")
 
     def bloquear_proxima_infeccao(self):

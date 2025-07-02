@@ -34,24 +34,26 @@ class Cidade:
         if not self._tem_centro_pesquisa:
             self._tem_centro_pesquisa = True
 
-    def adicionar_nivel_doenca(self, cor: Cor, quantidade: int):
+    def adicionar_nivel_doenca(self, cor: Cor, quantidade: int, outbreak_cities: set = None):
+        if outbreak_cities is None:
+            outbreak_cities = set()
+
         nivel_atual = self._niveis_doenca.get(cor, 0)
         novo_nivel = nivel_atual + quantidade
 
         if novo_nivel > 3:
-            self._niveis_doenca[cor] = 3 # Max 3 cubes per city
-            self.propagar_doenca(cor)
+            self._niveis_doenca[cor] = 3  # Max 3 cubes per city
+            if self not in outbreak_cities:
+                outbreak_cities.add(self)
+                self.propagar_doenca(cor, outbreak_cities)
         else:
             self._niveis_doenca[cor] = novo_nivel
 
-    def propagar_doenca(self, cor: Cor):
+    def propagar_doenca(self, cor: Cor, outbreak_cities: set):
         print(f"SURTO em {self.nome} com a doença {cor.name}!")
         for vizinha in self._vizinhas:
             print(f"Propagando para {vizinha.nome}...")
-            # Para evitar loops infinitos em surtos, a lógica real precisaria
-            # de um controle de cidades já surtadas neste turno.
-            # Esta é uma implementação simplificada.
-            vizinha.adicionar_nivel_doenca(cor, 1)
+            vizinha.adicionar_nivel_doenca(cor, 1, outbreak_cities)
 
     def reduzir_nivel_doenca(self, cor: Cor, quantidade: int):
         self._niveis_doenca[cor] = max(0, self._niveis_doenca.get(cor, 0) - quantidade)
