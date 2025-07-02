@@ -14,7 +14,7 @@ CARD_DISTRIBUTION = {
     "BloquearInfeccao": 6,
     "TratarDoenca": 6,
     "DescobrirCura": 6,
-    "EventoDoenca": 3 # Por cor, então X * 4 cartas de evento
+    "EventoDoenca": 2 # Por cor, então X * 4 cartas de evento
 }
 
 # Limites do Jogador
@@ -37,3 +37,7 @@ DISTRIBUTE_INITIAL_INFECTION_BY_COLOR = True # Se True, a infecção inicial dis
 
 # Limites de Ações Específicas
 MAX_SHARE_CARD_ACTIONS_PER_TURN = 1 # Quantidade máxima de vezes que um jogador pode usar a ação de compartilhar carta por turno
+
+# Configurações de Doença
+OUTBREAK_THRESHOLD = 3 # Nível de doença que causa um surto
+CRITICAL_DISEASE_LEVEL = 7 # Nível de doença que causa derrota

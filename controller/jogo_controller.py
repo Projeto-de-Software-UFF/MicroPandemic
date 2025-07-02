@@ -216,7 +216,7 @@ class Jogo:
         # Derrota: nível de doença >= 7 em qualquer cidade
         for cidade in self.cidades.values():
             for nivel in cidade.niveis_doenca.values():
-                if nivel >= 7:
+                if nivel >= config.CRITICAL_DISEASE_LEVEL:
                     print(f"Derrota! A doença atingiu o nível crítico em {cidade.nome}.")
                     self.game_over = True
                     return

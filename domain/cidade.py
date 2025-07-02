@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import List, Dict
 from enuns.cor import Cor
+import config
 
 class Cidade:
     def __init__(self, nome: str):
@@ -43,7 +44,7 @@ class Cidade:
 
         self._niveis_doenca[cor] = novo_nivel
 
-        if novo_nivel >= 3 and nivel_atual < 3:
+        if novo_nivel >= config.OUTBREAK_THRESHOLD and nivel_atual < config.OUTBREAK_THRESHOLD:
             if self not in outbreak_cities:
                 outbreak_cities.add(self)
                 self.propagar_doenca(cor, outbreak_cities)
