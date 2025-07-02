@@ -4,6 +4,7 @@ from terminal_view.painel import painel
 from terminal_view.view_map import viewMap
 from controller.jogo_controller import Jogo
 import config
+import os
 
 def exibir_estado_jogo(jogo: Jogo):
     """Função auxiliar para exibir o estado atual do jogo."""
@@ -28,7 +29,9 @@ def main():
     except ValueError:
         print("Número inválido. Iniciando com 1 jogador.")
         num_jogadores = 1
-    
+    # Limpa a tela antes de iniciar o jogo
+    os.system('cls' if os.name == 'nt' else 'clear')
+
     jogo.inicializar_jogo(num_jogadores)
 
     # --- Loop Principal do Jogo ---
