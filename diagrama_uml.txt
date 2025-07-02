@@ -13,8 +13,10 @@ classDiagram
     %% Enumeração de Tipos de Carta
     class TipoCarta {
         <<enumeration>>
+        CIDADE
+        EVENTO
+        EPIDEMIA
         ACAO
-        EVENTO_DOENCA
     }
 
     %% Classe Jogo (Singleton) - Orquestrador Central
@@ -42,55 +44,56 @@ classDiagram
     class Baralho {
         -cartas : List~Carta~
         -descarte : List~Carta~
-        +Baralho()
-        +inicializarBaralho(numCidades: int, numEventosPorCor: int) : void
-        +comprarCarta() : Carta
+        +Baralho(num_jogadores: int)
+        +inicializar_baralho(num_jogadores: int) : void
+        +comprar_carta() : Carta
         +embaralhar() : void
-        +estaVazio() : boolean
+        +esta_vazio() : boolean
     }
 
     %% Classe Cidade - Com sistema de níveis de doença corrigido
     class Cidade {
         -nome : String
         -vizinhas : List~Cidade~
-        -temCentroPesquisa : boolean
-        -niveisDoenca : Map~Cor, Integer~
+        -tem_centro_pesquisa : boolean
+        -niveis_doenca : Map~Cor, Integer~
         +Cidade(nome : String)
-        +adicionarVizinha(cidade : Cidade) : void
-        +construirCentroPesquisa() : void
-        +adicionarNivelDoenca(cor : Cor, quantidade: int) : void
-        +propagarDoenca(cor : Cor) : void
-        +reduzirNivelDoenca(cor : Cor, quantidade: int) : void
-        +removerTodaDoencaDeCor(cor : Cor) : void
-        +getNivelDoenca(cor: Cor) : int
+        +adicionar_vizinha(cidade : Cidade) : void
+        +construir_centro_pesquisa() : void
+        +adicionar_nivel_doenca(cor : Cor, quantidade: int) : void
+        +propagar_doenca(cor : Cor) : void
+        +reduzir_nivel_doenca(cor : Cor, quantidade: int) : void
+        +remover_toda_doenca_de_cor(cor : Cor) : void
+        +get_nivel_doenca(cor: Cor) : int
     }
 
     class Jogador {
         -nome: String
         -posicao : Cidade
         -mao : Mao
-        +Jogador(nome: String, posicaoInicial : Cidade)
-        +moverPara(cidade : Cidade) : void
-        +getMao() : Mao
-        +compartilharCarta(outroJogador : Jogador, carta : Carta) : boolean
+        -baralho_pessoal : Baralho
+        +Jogador(nome: String, posicao: Cidade, num_jogadores: int)
+        +mover_para(cidade : Cidade) : void
+        +mao() : Mao
+        +compartilhar_carta(outroJogador : Jogador, carta : Carta) : boolean
     }
 
     class Mao {
         -cartas : List~Carta~
-        -limiteCartas : int
+        -limite_cartas : int
         +Mao()
-        +adicionarCarta(carta : Carta) : boolean
-        +removerCarta(carta : Carta) : boolean
-        +getCartas() : List~Carta~
-        +estaCheia() : boolean
+        +adicionar_carta(carta : Carta) : boolean
+        +remover_carta(carta : Carta) : boolean
+        +cartas() : List~Carta~
+        +esta_cheia() : boolean
     }
 
     class Doenca {
         -cor : Cor
         -curada : boolean
         +Doenca(cor : Cor)
-        +isCurada() : boolean
-        +setCurada(status : boolean) : void
+        +curada() : boolean
+        +curada(status : boolean) : void
     }
 
     %% Hierarquia de Cartas (Polimorfismo)
@@ -98,41 +101,29 @@ classDiagram
         <<abstract>>
         #nome : String
         #tipo : TipoCarta
-        +ativar(jogo : Jogo, jogador : Jogador)* : void
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs)* : boolean
     }
 
     class DescobrirCura {
         -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador) : void
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
     }
     class BloquearInfeccao {
-        +ativar(jogo : Jogo, jogador : Jogador) : void
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
     }
     class TratarDoenca {
         -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador) : void
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
     }
     class Teletransporte {
-        +ativar(jogo : Jogo, jogador : Jogador) : void
-    }
-    class MoverJogador {
-        +ativar(jogo : Jogo, jogador : Jogador) : void
+        +ativar(jogo : Jogo, jogador : Jogador, cidade_alvo: Cidade) : boolean
     }
     class ConstruirCentroPesquisa {
-        +ativar(jogo : Jogo, jogador : Jogador) : void
-    }
-    class CompartilharCarta {
-        +ativar(jogo : Jogo, jogador : Jogador) : void
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
     }
     class EventoDoenca {
         -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador) : void
-    }
-
-    %% Factory para criação de cartas
-    class CartaFactory {
-        <<utility>>
-        +criarCarta(tipo: String, cor: Cor) : Carta
+        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
     }
 
     %% Relações de Herança
@@ -141,14 +132,12 @@ classDiagram
     Carta <|-- TratarDoenca
     Carta <|-- EventoDoenca
     Carta <|-- Teletransporte
-    Carta <|-- MoverJogador
     Carta <|-- ConstruirCentroPesquisa
-    Carta <|-- CompartilharCarta
 
     %% Relações de Composição e Agregação
     Jogo "1" *-- "1" Baralho
     Jogo "1" *-- "1..4" Jogador
-    Jogo "1" *-- "5" Cidade
+    Jogo "1" *-- "*" Cidade
     Jogo "1" *-- "4" Doenca
     Jogador "1" *-- "1" Mao
     Mao "1" o-- "0..7" Carta
@@ -161,4 +150,4 @@ classDiagram
     %% Dependências
     Carta ..> Jogo : usa
     Carta ..> Jogador : usa
-    CartaFactory ..> Carta : cria
+    Teletransporte ..> Cidade : usa
