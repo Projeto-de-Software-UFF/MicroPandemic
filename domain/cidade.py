@@ -43,7 +43,7 @@ class Cidade:
 
         self._niveis_doenca[cor] = novo_nivel
 
-        if nivel_atual <= 3 and novo_nivel > 3:
+        if novo_nivel >= 3 and nivel_atual < 3:
             if self not in outbreak_cities:
                 outbreak_cities.add(self)
                 self.propagar_doenca(cor, outbreak_cities)
