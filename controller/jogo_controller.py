@@ -36,6 +36,9 @@ class Jogo:
     def _clear_terminal(self):
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    def _wait_for_user_input(self):
+        input("Pressione Enter para continuar...")
+
     @staticmethod
     def get_instancia() -> "Jogo":
         if Jogo._instancia is None:
@@ -176,6 +179,7 @@ class Jogo:
                 carta.ativar(self, self.jogador_atual)
             else:
                 self.jogador_atual.mao.adicionar_carta(carta)
+        self._wait_for_user_input()
         self._clear_terminal()
         
         # Fase de Infecção
@@ -195,6 +199,7 @@ class Jogo:
         cor_infeccao = random.choice(list(Cor))
         print(f"A cidade {cidade_a_infectar.nome} será infectada com a doença {cor_infeccao.name}.")
         cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1, set())
+        self._wait_for_user_input()
         self._clear_terminal()
 
 
