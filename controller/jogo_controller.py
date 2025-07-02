@@ -176,7 +176,6 @@ class Jogo:
                 carta.ativar(self, self.jogador_atual)
             else:
                 self.jogador_atual.mao.adicionar_carta(carta)
-        self._clear_terminal()
         
         # Fase de Infecção
         if not self._infeccao_bloqueada:
@@ -195,7 +194,6 @@ class Jogo:
         cor_infeccao = random.choice(list(Cor))
         print(f"A cidade {cidade_a_infectar.nome} será infectada com a doença {cor_infeccao.name}.")
         cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1, set())
-        self._clear_terminal()
 
 
     def descobrir_cura(self, cor: Cor):
