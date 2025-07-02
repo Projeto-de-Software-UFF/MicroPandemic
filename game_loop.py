@@ -42,6 +42,7 @@ def main():
             if not jogo.game_over:
                 jogo.proximo_turno()
             input("Pressione Enter para iniciar o próximo turno...")
+            jogo._clear_terminal()
 
         if jogo.acoes_restantes > 0:
             menu()
@@ -55,6 +56,7 @@ def main():
                 if not jogador.mao.cartas:
                     print("Sua mão está vazia. Nenhuma carta para usar.")
                     input("Pressione Enter para continuar...")
+                    jogo._clear_terminal()
                     continue
 
                 try:
@@ -90,12 +92,14 @@ def main():
                     print("Seleção inválida.")
                 
                 input("Pressione Enter para continuar...")
+                jogo._clear_terminal()
 
             elif opcao == '2': # Mover-se
                 vizinhas = jogador.posicao.vizinhas
                 if not vizinhas:
                     print("Não há cidades vizinhas para onde se mover.")
                     input("Pressione Enter para continuar...")
+                    jogo._clear_terminal()
                     continue
                 
                 print("\nEscolha uma cidade vizinha para se mover:")
@@ -113,6 +117,7 @@ def main():
                     print("Entrada inválida.")
                 
                 input("Pressione Enter para continuar...")
+                jogo._clear_terminal()
 
             elif opcao == '3': # Compartilhar Carta
                 if len(jogo.jogadores) <= 1:
@@ -123,6 +128,7 @@ def main():
                 if not jogador.mao.cartas:
                     print("Sua mão está vazia. Nenhuma carta para compartilhar.")
                     input("Pressione Enter para continuar...")
+                    jogo._clear_terminal()
                     continue
 
                 try:
@@ -150,6 +156,7 @@ def main():
                     print("Seleção inválida.")
                 
                 input("Pressione Enter para continuar...")
+                jogo._clear_terminal()
 
             elif opcao == '4': # Passar turno
                 print("Você escolheu passar as ações restantes.")
@@ -158,12 +165,14 @@ def main():
             else:
                 print("Opção inválida.")
                 input("Pressione Enter para continuar...")
+                jogo._clear_terminal()
 
         # Se acabaram as ações, avança para a próxima fase
         if jogo.acoes_restantes <= 0:
             if not jogo.game_over:
                 jogo.proximo_turno()
             input("Pressione Enter para iniciar o próximo turno...")
+            jogo._clear_terminal()
 
 
     # --- Fim de Jogo ---

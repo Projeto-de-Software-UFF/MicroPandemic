@@ -133,7 +133,6 @@ class Jogo:
             self.acoes_restantes -= 1
             self._share_card_actions_this_turn[jogador_origem] = self._share_card_actions_this_turn.get(jogador_origem, 0) + 1
             print(f"Compartilhamento realizado. Ações restantes: {self.acoes_restantes}")
-            self._clear_terminal()
             return True
         return False
 
