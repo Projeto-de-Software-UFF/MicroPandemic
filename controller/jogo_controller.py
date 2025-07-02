@@ -10,6 +10,7 @@ from controller.game_map_controller import GameMap
 from domain.carta.carta import TipoCarta
 
 import config
+import os
 
 class Jogo:
     _instancia = None
@@ -31,6 +32,9 @@ class Jogo:
         self._share_card_actions_this_turn: Dict[Jogador, int] = {}
         
         Jogo._instancia = self
+
+    def _clear_terminal(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
 
     @staticmethod
     def get_instancia() -> "Jogo":
@@ -103,6 +107,7 @@ class Jogo:
             jogador.mover_para(cidade_destino)
             self.acoes_restantes -= 1
             print(f"Movimento realizado. Ações restantes: {self.acoes_restantes}")
+            self._clear_terminal()
             return True
         else:
             print(f"Movimento inválido: {cidade_destino.nome} não é vizinha de {jogador.posicao.nome}.")
@@ -125,6 +130,7 @@ class Jogo:
             self.acoes_restantes -= 1
             self._share_card_actions_this_turn[jogador_origem] = self._share_card_actions_this_turn.get(jogador_origem, 0) + 1
             print(f"Compartilhamento realizado. Ações restantes: {self.acoes_restantes}")
+            self._clear_terminal()
             return True
         return False
 
@@ -141,6 +147,7 @@ class Jogo:
         self.acoes_restantes = config.MAX_ACTIONS_PER_TURN
         self._turn_count += 1
         self._share_card_actions_this_turn = {}
+        self._clear_terminal()
         print(f"\n--- Próximo turno: {self.jogador_atual.nome} ---")
 
         self.executar_fases_fim_turno()
@@ -169,6 +176,7 @@ class Jogo:
                 carta.ativar(self, self.jogador_atual)
             else:
                 self.jogador_atual.mao.adicionar_carta(carta)
+        self._clear_terminal()
         
         # Fase de Infecção
         if not self._infeccao_bloqueada:
@@ -187,6 +195,7 @@ class Jogo:
         cor_infeccao = random.choice(list(Cor))
         print(f"A cidade {cidade_a_infectar.nome} será infectada com a doença {cor_infeccao.name}.")
         cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1, set())
+        self._clear_terminal()
 
 
     def descobrir_cura(self, cor: Cor):
