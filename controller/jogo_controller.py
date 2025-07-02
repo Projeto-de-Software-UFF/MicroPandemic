@@ -7,6 +7,7 @@ from domain.doenca import Doenca
 from domain.jogador import Jogador
 from enuns.cor import Cor
 from controller.game_map_controller import GameMap
+from domain.carta.carta import TipoCarta
 
 import config
 
@@ -61,8 +62,9 @@ class Jogo:
         for i in range(num_jogadores):
             self.jogadores.append(Jogador(f"Jogador {i+1}", cidade_inicial, num_jogadores))
 
-        # 4. Distribuir Mãos Iniciais
         from domain.carta.carta import TipoCarta # Import here to avoid circular dependency
+
+        # 4. Distribuir Mãos Iniciais
         for jogador in self.jogadores:
             for _ in range(config.NUM_INITIAL_CARDS): # Usar config.NUM_INITIAL_CARDS
                 if config.SHARED_DECK:
