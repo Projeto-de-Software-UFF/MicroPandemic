@@ -81,9 +81,11 @@ class Jogo:
         # 5. Infecção Inicial
         for i in range(3, 0, -1): # 3, 2, 1 níveis de infecção
             cidade_infectada = random.choice(list(self.cidades.values()))
-            cor_aleatoria = random.choice(list(Cor))
-            cidade_infectada.adicionar_nivel_doenca(cor_aleatoria, i, set())
-            print(f"Infecção inicial: {cidade_infectada.nome} com {i} nível(is) de doença {cor_aleatoria.name}.")
+            print(f"Infecção inicial em {cidade_infectada.nome}:")
+            for _ in range(i):
+                cor_aleatoria = random.choice(list(Cor))
+                cidade_infectada.adicionar_nivel_doenca(cor_aleatoria, 1, set())
+                print(f"  Adicionado 1 nível de doença {cor_aleatoria.name}.")
 
         print("\nJogo iniciado!")
 
