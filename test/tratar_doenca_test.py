@@ -14,7 +14,7 @@ def mock_jogo():
     jogo.doencas = {
         Cor.AZUL: Doenca(Cor.AZUL),
         Cor.AMARELO: Doenca(Cor.AMARELO),
-        Cor.PRETO: Doenca(Cor.PRETO),
+        Cor.VERDE: Doenca(Cor.VERDE),
         Cor.VERMELHO: Doenca(Cor.VERMELHO),
     }
     return jogo
@@ -32,7 +32,6 @@ def mock_jogador(mock_cidade):
 def test_tratar_doenca_normal(mock_jogo, mock_cidade, mock_jogador):
     # Cenário: Tratar doença normalmente (sem cura ou centro de pesquisa)
     mock_cidade.adicionar_nivel_doenca(Cor.AZUL, 3)
-    mock_jogador.posicao = mock_cidade # Garante que o jogador está na cidade correta
 
     carta_tratar = TratarDoenca(Cor.AZUL)
     carta_tratar.ativar(mock_jogo, mock_jogador)
@@ -43,7 +42,6 @@ def test_tratar_doenca_com_cura_e_centro_pesquisa(mock_jogo, mock_cidade, mock_j
     # Cenário: Tratar doença com cura descoberta e centro de pesquisa
     mock_cidade.adicionar_nivel_doenca(Cor.VERMELHO, 3)
     mock_cidade.construir_centro_pesquisa() # Adiciona centro de pesquisa
-    mock_jogador.posicao = mock_cidade # Garante que o jogador está na cidade correta
 
     # Simula a cura da doença
     mock_jogo.doencas[Cor.VERMELHO].curada = True
@@ -56,7 +54,6 @@ def test_tratar_doenca_com_cura_e_centro_pesquisa(mock_jogo, mock_cidade, mock_j
 def test_tratar_doenca_com_cura_sem_centro_pesquisa(mock_jogo, mock_cidade, mock_jogador):
     # Cenário: Tratar doença com cura descoberta, mas sem centro de pesquisa
     mock_cidade.adicionar_nivel_doenca(Cor.AMARELO, 3)
-    mock_jogador.posicao = mock_cidade # Garante que o jogador está na cidade correta
 
     # Simula a cura da doença
     mock_jogo.doencas[Cor.AMARELO].curada = True
@@ -68,11 +65,10 @@ def test_tratar_doenca_com_cura_sem_centro_pesquisa(mock_jogo, mock_cidade, mock
 
 def test_tratar_doenca_sem_cura_com_centro_pesquisa(mock_jogo, mock_cidade, mock_jogador):
     # Cenário: Tratar doença sem cura descoberta, mas com centro de pesquisa
-    mock_cidade.adicionar_nivel_doenca(Cor.PRETO, 3)
+    mock_cidade.adicionar_nivel_doenca(Cor.VERDE, 3)
     mock_cidade.construir_centro_pesquisa() # Adiciona centro de pesquisa
-    mock_jogador.posicao = mock_cidade # Garante que o jogador está na cidade correta
 
-    carta_tratar = TratarDoenca(Cor.PRETO)
+    carta_tratar = TratarDoenca(Cor.VERDE)
     carta_tratar.ativar(mock_jogo, mock_jogador)
 
-    assert mock_cidade.get_nivel_doenca(Cor.PRETO) == 2
+    assert mock_cidade.get_nivel_doenca(Cor.VERDE) == 2
