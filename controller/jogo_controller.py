@@ -199,8 +199,6 @@ class Jogo:
         cor_infeccao = random.choice(list(Cor))
         print(f"A cidade {cidade_a_infectar.nome} será infectada com a doença {cor_infeccao.name}.")
         cidade_a_infectar.adicionar_nivel_doenca(cor_infeccao, 1, set())
-        self._wait_for_user_input()
-        self._clear_terminal()
 
 
     def descobrir_cura(self, cor: Cor):
