@@ -1,4 +1,4 @@
-# Pandemic (Refatorado)
+# MicroPandemic
 
 Este projeto é uma implementação de uma versão simplificada do jogo de tabuleiro Pandemic, baseada no terminal.
 
