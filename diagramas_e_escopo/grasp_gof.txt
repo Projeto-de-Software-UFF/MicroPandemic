@@ -52,7 +52,7 @@
      Geralmente, a classe B cria a classe A se B "contém" ou "agrega" A.
    * Onde está no diagrama?
        * `Jogo`: Cria os objetos Jogador e Doenca em seu método inicializar_jogo().
-       * `GameMapController`: Cria os objetos Cidade ao montar o mapa.
+       * `GameMap`: Cria os objetos Cidade ao montar o mapa.
        * `Baralho`: Cria os objetos Carta em seu método _inicializar_baralho().
    * Explicação: A responsabilidade de criação é lógica. Como o Jogo "contém" os jogadores, faz
      sentido que ele os crie. Isso mantém o conhecimento sobre a construção dos objetos
