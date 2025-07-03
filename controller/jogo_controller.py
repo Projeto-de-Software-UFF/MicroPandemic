@@ -217,12 +217,13 @@ class Jogo:
         return self.doencas[cor]
 
     def verificar_condicoes_finais(self):
-        # Vitória: todas as 4 doenças curadas
-        if all(d.curada for d in self.doencas.values()):
-            print("Parabéns! Todas as doenças foram curadas. Vocês venceram!")
-            self.vitoria = True
-            self.game_over = True
-            return
+        # Vitória: todas as 4 doenças curadas. Desabilitável nas configurações.
+        if config.VICTORY_ONLY_BY_ERADICATION == False:
+            if all(d.curada for d in self.doencas.values()):
+                print("Parabéns! Todas as doenças foram curadas. Vocês venceram!")
+                self.vitoria = True
+                self.game_over = True
+                return
 
         # Nova condição de vitória: nenhuma doença em nenhuma cidade
         total_doencas = sum(nivel for cidade in self.cidades.values() for nivel in cidade.niveis_doenca.values())
