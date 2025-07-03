@@ -4,7 +4,7 @@
 MAX_ACTIONS_PER_TURN = 3
 MAX_PLAYERS = 4
 NUM_CITIES = 5
-MAX_NEIGHBORS_PER_CITY = 3 # Um valor razoável para um mapa pequeno
+MAX_NEIGHBORS_PER_CITY = 3
 
 # Distribuição de Cartas no Baralho
 # Formato: { "NomeDaCarta": Quantidade }
