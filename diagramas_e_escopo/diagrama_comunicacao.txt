@@ -1,0 +1,42 @@
+sequenceDiagram
+    participant User
+    participant GameLoop
+    participant Jogo
+    participant Jogador
+    participant Mao
+    participant TratarDoenca as "Carta: TratarDoenca"
+    participant Cidade
+
+    User->>GameLoop: main()
+    GameLoop->>Jogo: inicializar_jogo()
+    note right of GameLoop: O jogo eh inicializado
+
+    loop Turno
+        GameLoop->>GameLoop: exibir_estado_jogo()
+        User->>GameLoop: Escolhe "Usar Carta" (1)
+        GameLoop->>Jogador: mao
+        Jogador->>Mao: cartas
+        Mao-->>Jogador: lista_de_cartas
+        Jogador-->>GameLoop: lista_de_cartas
+        note right of GameLoop: Exibe a mao para o usuario
+        User->>GameLoop: Escolhe carta "Tratar Doenca"
+
+        GameLoop->>TratarDoenca: ativar(jogo, jogador)
+        activate TratarDoenca
+
+        TratarDoenca->>Jogador: posicao
+        Jogador-->>TratarDoenca: cidade_atual
+        TratarDoenca->>Jogo: get_doenca(cor)
+        Jogo-->>TratarDoenca: doenca
+        alt Doenca curada e tem centro de pesquisa
+            TratarDoenca->>Cidade: remover_toda_doenca_de_cor(cor)
+        else
+            TratarDoenca->>Cidade: reduzir_nivel_doenca(cor, 1)
+        end
+        Cidade-->>TratarDoenca:
+        TratarDoenca-->>GameLoop: sucesso=true
+        deactivate TratarDoenca
+
+        GameLoop->>Mao: remover_carta(carta_selecionada)
+        GameLoop->>Jogo: acoes_restantes -= 1
+    end
