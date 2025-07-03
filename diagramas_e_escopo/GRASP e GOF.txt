@@ -1,0 +1,103 @@
+  Padrões GRASP
+
+
+  Os princípios GRASP não são "receitas de bolo" como os padrões GoF, mas sim diretrizes
+  fundamentais para atribuir responsabilidades às classes. O projeto aplica vários deles de
+  forma exemplar.
+
+
+  1. Controlador (Controller)
+   * O que é? Um padrão que atribui a responsabilidade de lidar com eventos do sistema a uma
+     classe que não faz parte da interface do usuário. Ela atua como uma intermediária entre a
+     camada de visão (UI) и a camada de domínio (lógica do jogo).
+   * Onde está no diagrama? A classe `Jogo` é o principal exemplo de um Controlador.
+   * Explicação: A classe Jogo recebe as solicitações iniciadas pelo usuário (através do
+     game_loop.py), como mover_jogador() ou compartilhar_carta_acao(), e coordena os objetos de
+     domínio (Jogador, Cidade, Baralho) para executar a ação. Isso desacopla a lógica do jogo da
+     sua representação visual (terminal_view), permitindo que a interface seja trocada sem
+     alterar as regras do negócio.
+
+
+  2. Especialista na Informação (Information Expert)
+   * O que é? O princípio mais fundamental do GRASP: a responsabilidade deve ser atribuída à
+     classe que tem a informação necessária para cumpri-la.
+   * Onde está no diagrama? Em praticamente todas as classes de domínio.
+       * `Cidade`: É a especialista em saber quais são suas vizinhas (vizinhas()) e seus níveis
+         de doença (niveis_doenca()).
+       * `Jogador`: É o especialista em saber sua própria posição (posicao()) e as cartas que
+         possui (mao()).
+       * `Mao`: É a especialista em saber se está cheia (esta_cheia()).
+       * `Doenca`: É a especialista em saber se já foi curada (curada()).
+   * Explicação: Em vez de uma classe central (como Jogo) perguntar todos os detalhes e tomar
+     todas as decisões, a responsabilidade é distribuída. Jogo não calcula se um jogador pode se
+     mover; ele pergunta à Cidade atual do jogador quais são suas vizinhas e verifica se o
+     destino está nessa lista. Isso aumenta a coesão e reduz o acoplamento.
+
+
+  3. Polimorfismo (Polymorphism)
+   * O que é? Atribui a responsabilidade de definir variações de um comportamento a diferentes
+     tipos de uma mesma hierarquia. Permite tratar objetos de diferentes classes de maneira
+     uniforme.
+   * Onde está no diagrama? Na hierarquia da classe `Carta`.
+   * Explicação: Todas as cartas (Teletransporte, TratarDoenca, etc.) herdam de Carta e possuem o
+      método ativar(). O game_loop não precisa saber qual tipo de carta está sendo usada. Ele
+     simplesmente chama carta_selecionada.ativar(...) e, graças ao polimorfismo, a implementação
+     correta (a da subclasse específica) é executada. Isso elimina a necessidade de condicionais
+     (if/else) complexas para tratar cada tipo de carta, tornando o código muito mais limpo e
+     extensível.
+
+
+  4. Criador (Creator)
+   * O que é? Define qual classe deve ser responsável por criar instâncias de outra classe.
+     Geralmente, a classe B cria a classe A se B "contém" ou "agrega" A.
+   * Onde está no diagrama?
+       * `Jogo`: Cria os objetos Jogador e Doenca em seu método inicializar_jogo().
+       * `GameMapController`: Cria os objetos Cidade ao montar o mapa.
+       * `Baralho`: Cria os objetos Carta em seu método _inicializar_baralho().
+   * Explicação: A responsabilidade de criação é lógica. Como o Jogo "contém" os jogadores, faz
+     sentido que ele os crie. Isso mantém o conhecimento sobre a construção dos objetos
+     centralizado em um local apropriado.
+
+
+  ---
+
+  Padrões GoF (Gang of Four)
+
+  Estes são padrões de design mais específicos e estruturados.
+
+
+  1. Singleton
+   * O que é? Um padrão de criação que garante que uma classe tenha apenas uma única instância e
+     fornece um ponto de acesso global a essa instância.
+   * Onde está no diagrama? A classe `Jogo` é explicitamente marcada como <<singleton>>.
+   * Explicação: O estado do jogo (quem são os jogadores, quais cidades existem, quais doenças
+     estão curadas) deve ser único e consistente em todo o sistema. O padrão Singleton, com o
+     método Jogo.get_instancia(), garante que todas as partes do código acessem sempre o mesmo e
+     único objeto Jogo, evitando inconsistências de estado.
+
+
+  2. Estratégia (Strategy)
+   * O que é? Um padrão de comportamento que permite definir uma família de algoritmos,
+     encapsular cada um deles e torná-los intercambiáveis.
+   * Onde está no diagrama? A hierarquia da classe `Carta` também é um exemplo perfeito do
+     padrão Strategy.
+   * Explicação: Pense em "usar uma carta" como um contexto. A ação específica que acontece
+     depende da "estratégia" da carta. Cada subclasse de Carta (BloquearInfeccao,
+     ConstruirCentroPesquisa, etc.) é uma estratégia concreta. O método ativar() é a interface
+     comum da estratégia. O jogador, ao escolher uma carta, está efetivamente escolhendo qual
+     algoritmo (estratégia) será executado, e o sistema pode usá-los de forma intercambiável sem
+     conhecer os detalhes de cada um.
+
+
+  3. Modelo de Método (Template Method)
+   * O que é? Um padrão de comportamento que define o esqueleto de um algoritmo em um método de
+     uma superclasse, mas permite que as subclasses redefinam certas etapas desse algoritmo sem
+     alterar sua estrutura geral.
+   * Onde está no diagrama? O método `proximo_turno()` na classe Jogo funciona como um Template
+     Method.
+   * Explicação: O método proximo_turno() define a sequência de passos fixa para o final de um
+     turno: gerenciar a mão do jogador, avançar para o próximo jogador, resetar as ações e,
+     crucialmente, chamar executar_fases_fim_turno(). Por sua vez, executar_fases_fim_turno()
+     define outra sequência: comprar cartas e executar a fase de infecção. Essa estrutura é o
+     "template". Embora as etapas em si possam ter lógicas complexas, a ordem delas é fixa e
+     definida pelo "template method", garantindo que a estrutura do turno seja sempre a mesma.

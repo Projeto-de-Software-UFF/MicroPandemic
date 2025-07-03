@@ -1,4 +1,5 @@
 sequenceDiagram
+    participant GL as GameLoop
     participant J as Jogador
     participant M as Mao
     participant C as Carta
@@ -6,61 +7,83 @@ sequenceDiagram
     participant B as Baralho
     participant CD as Cidade
 
-    G->>J: Início do seu turno
+    title Fluxo de Turno do Jogador
+
+    GL->>G: Início do turno do jogador_atual
+    activate G
+    G-->>GL: Retorna estado atual do jogo (para exibição)
+    deactivate G
+
+    Note over GL,J: Jogador decide usar uma carta de ação (ex: Tratar Doença)
+
+    GL->>J: get mao
     activate J
-
-    Note over J,G: Jogador realiza uma ação (ex: Tratar Doença)
-
-    J->>G: realizarAcao(jogador, cartaTratarDoenca)
-    activate G
-
-    G->>C: ativar(jogo, jogador, **kwargs)
-    activate C
-    C->>J: posicao
-    J-->>C: retorna Cidade
-    C->>CD: reduzir_nivel_doenca(cor, quantidade)
-    activate CD
-    deactivate CD
-    C-->>G: Ação concluída
-    deactivate C
-    G-->>J: Ação realizada com sucesso
-    deactivate G
-
-    Note over J,G: Fim da fase de ações. Jogador compra cartas.
-
-    J->>G: Solicita comprar cartas
-    activate G
-    G->>B: comprar_carta()
-    activate B
-    B-->>G: Retorna Carta 1
-    deactivate B
-    G->>M: adicionar_carta(Carta 1)
+    J->>M: get cartas
     activate M
+    M-->>J: retorna lista de cartas
     deactivate M
-
-    G->>B: comprar_carta()
-    activate B
-    B-->>G: Retorna Carta 2
-    deactivate B
-    G->>M: adicionar_carta(Carta 2)
-    activate M
-    deactivate M
-    deactivate G
-
-    Note over J,G: Fase de Infecção
-
-    G->>G: aplicar_evento_doenca()
-    activate G
-    Note right of G: Jogo seleciona cidade para infectar
-    G->>CD: adicionar_nivel_doenca(cor, 1)
-    activate CD
-    Note right of CD: Se o nível chegar a 4, propaga a doença
-    CD->>CD: propagar_doenca(cor)
-    deactivate CD
-    deactivate G
-
-    G->>G: verificarVitoria()
-    G->>G: verificarDerrota()
-
-    G->>J: Fim do turno
+    J-->>GL: retorna mao
     deactivate J
+
+    Note over GL,C: GameLoop seleciona a carta e chama seu método ativar()
+
+    GL->>C: ativar(jogo=G, jogador=J, **kwargs)
+    activate C
+    C->>J: get posicao
+    activate J
+    J-->>C: retorna cidade_atual
+    deactivate J
+    C->>CD: reduzir_nivel_doenca(cor, 1)
+    activate CD
+    deactivate CD
+    C-->>GL: retorna sucesso=true
+    deactivate C
+
+    GL->>M: remover_carta(carta)
+    activate M
+    deactivate M
+    GL->>G: decrementar acoes_restantes
+    activate G
+    deactivate G
+
+    Note over GL,G: Jogador passa o turno ou ações acabam
+
+    GL->>G: proximo_turno()
+    activate G
+    G->>G: executar_fases_fim_turno()
+    activate G
+
+    Note over G,B: Fase de Compra de Cartas
+    loop 2 vezes
+        G->>B: comprar_carta()
+        activate B
+        B-->>G: retorna carta_comprada
+        deactivate B
+        alt carta_comprada é Epidemia
+            G->>C: ativar(jogo=G, jogador=J)
+        else
+            G->>J: get mao
+            activate J
+            J->>M: adicionar_carta(carta_comprada)
+            activate M
+            deactivate M
+            deactivate J
+        end
+    end
+
+    Note over G,CD: Fase de Infecção
+    G->>G: fase_infeccao()
+    activate G
+    G->>CD: adicionar_nivel_doenca(cor, 1, set())
+    activate CD
+    opt Surto (Outbreak)
+        CD->>CD: propagar_doenca(cor, outbreak_cities)
+    end
+    deactivate CD
+    deactivate G
+
+    deactivate G
+
+    G->>G: verificar_condicoes_finais()
+    G-->>GL:
+    deactivate G

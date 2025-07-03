@@ -1,16 +1,15 @@
 classDiagram
     title Diagrama de Classes Corrigido - MicroPandemic
 
-    %% Enumeração de Cores
+    %% Enumerações
     class Cor {
         <<enumeration>>
-        VERMELHA
         AZUL
-        AMARELA
+        VERMELHO
+        AMARELO
         VERDE
     }
 
-    %% Enumeração de Tipos de Carta
     class TipoCarta {
         <<enumeration>>
         CIDADE
@@ -19,111 +18,135 @@ classDiagram
         ACAO
     }
 
-    %% Classe Jogo (Singleton) - Orquestrador Central
+    %% Classe Jogo (Singleton)
     class Jogo {
         <<singleton>>
-        -instancia : Jogo
+        -_instancia : Jogo
         -jogadores : List~Jogador~
-        -cidades : Map~String, Cidade~
+        -cidades : Dict~str, Cidade~
         -baralho : Baralho
-        -doencas : Map~Cor, Doenca~
-        -acoesRestantes : int
-        -gameOver : boolean
-        +getInstance() : Jogo
-        +inicializarJogo(numJogadores: int) : void
-        +proximoTurno() : void
-        +realizarAcao(jogador: Jogador, carta: Carta) : boolean
-        +verificarVitoria() : boolean
-        +verificarDerrota() : boolean
-        +getJogadorAtual() : Jogador
-        +descobrirCura(cor : Cor) : void
-        +aplicarEventoDoenca() : void
+        -doencas : Dict~Cor, Doenca~
+        -acoes_restantes : int
+        -game_over : bool
+        -vitoria : bool
+        -jogador_atual_idx : int
+        -_infeccao_bloqueada : bool
+        -_turn_count : int
+        -_share_card_actions_this_turn : Dict~Jogador, int~
+        +get_instancia() : Jogo
+        +jogador_atual() : Jogador
+        +inicializar_jogo(num_jogadores: int) : void
+        +mover_jogador(jogador: Jogador, cidade_destino: Cidade) : bool
+        +compartilhar_carta_acao(jogador_origem: Jogador, jogador_destino: Jogador, carta_a_compartilhar: Carta) : bool
+        +proximo_turno() : void
+        +executar_fases_fim_turno() : void
+        +fase_infeccao() : void
+        +descobrir_cura(cor: Cor) : void
+        +aplicar_evento_doenca(cor: Cor) : void
+        +bloquear_proxima_infeccao() : void
+        +get_doenca(cor: Cor) : Doenca
+        +verificar_condicoes_finais() : void
     }
 
-    %% Classe Baralho - Ajustada para melhor balanceamento
+    %% Classe Baralho
     class Baralho {
-        -cartas : List~Carta~
-        -descarte : List~Carta~
+        -_cartas : List~Carta~
+        -_descarte : List~Carta~
         +Baralho(num_jogadores: int)
-        +inicializar_baralho(num_jogadores: int) : void
+        -_inicializar_baralho(num_jogadores: int) : void
         +comprar_carta() : Carta
         +embaralhar() : void
-        +esta_vazio() : boolean
+        +esta_vazio() : bool
     }
 
-    %% Classe Cidade - Com sistema de níveis de doença corrigido
+    %% Classe Cidade
     class Cidade {
-        -nome : String
-        -vizinhas : List~Cidade~
-        -tem_centro_pesquisa : boolean
-        -niveis_doenca : Map~Cor, Integer~
-        +Cidade(nome : String)
-        +adicionar_vizinha(cidade : Cidade) : void
+        -_nome : str
+        -_vizinhas : List~Cidade~
+        -_tem_centro_pesquisa : bool
+        -_niveis_doenca : Dict~Cor, int~
+        +Cidade(nome: str)
+        +nome() : str
+        +vizinhas() : List~Cidade~
+        +tem_centro_pesquisa() : bool
+        +niveis_doenca() : Dict~Cor, int~
+        +adicionar_vizinha(cidade: Cidade) : void
         +construir_centro_pesquisa() : void
-        +adicionar_nivel_doenca(cor : Cor, quantidade: int) : void
-        +propagar_doenca(cor : Cor) : void
-        +reduzir_nivel_doenca(cor : Cor, quantidade: int) : void
-        +remover_toda_doenca_de_cor(cor : Cor) : void
+        +adicionar_nivel_doenca(cor: Cor, quantidade: int, outbreak_cities: set) : void
+        +propagar_doenca(cor: Cor, outbreak_cities: set) : void
+        +reduzir_nivel_doenca(cor: Cor, quantidade: int) : void
+        +remover_toda_doenca_de_cor(cor: Cor) : void
         +get_nivel_doenca(cor: Cor) : int
     }
 
+    %% Classe Jogador
     class Jogador {
-        -nome: String
-        -posicao : Cidade
-        -mao : Mao
-        -baralho_pessoal : Baralho
-        +Jogador(nome: String, posicao: Cidade, num_jogadores: int)
-        +mover_para(cidade : Cidade) : void
+        -_nome : str
+        -_posicao : Cidade
+        -_mao : Mao
+        -_baralho_pessoal : Baralho
+        +Jogador(nome: str, posicao: Cidade, num_jogadores: int)
+        +nome() : str
+        +posicao() : Cidade
         +mao() : Mao
-        +compartilhar_carta(outroJogador : Jogador, carta : Carta) : boolean
+        +mover_para(cidade: Cidade) : void
+        +compartilhar_carta(outro_jogador: Jogador, carta: Carta) : bool
     }
 
+    %% Classe Mao
     class Mao {
-        -cartas : List~Carta~
-        -limite_cartas : int
+        -_cartas : List~Carta~
+        -_limite_cartas : int
         +Mao()
-        +adicionar_carta(carta : Carta) : boolean
-        +remover_carta(carta : Carta) : boolean
         +cartas() : List~Carta~
-        +esta_cheia() : boolean
+        +adicionar_carta(carta: Carta) : bool
+        +remover_carta(carta: Carta) : bool
+        +esta_cheia() : bool
     }
 
+    %% Classe Doenca
     class Doenca {
-        -cor : Cor
-        -curada : boolean
-        +Doenca(cor : Cor)
-        +curada() : boolean
-        +curada(status : boolean) : void
+        -_cor : Cor
+        -_curada : bool
+        +Doenca(cor: Cor)
+        +cor() : Cor
+        +curada() : bool
+        +curada(status: bool) : void
     }
 
-    %% Hierarquia de Cartas (Polimorfismo)
+    %% Hierarquia de Cartas
     class Carta {
         <<abstract>>
-        #nome : String
-        #tipo : TipoCarta
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs)* : boolean
+        -_nome : str
+        -_tipo : TipoCarta
+        +nome() : str
+        +tipo() : TipoCarta
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs)* : bool
     }
 
     class DescobrirCura {
-        -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
+        -_cor : Cor
+        +cor() : Cor
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs) : bool
     }
     class BloquearInfeccao {
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs) : bool
     }
     class TratarDoenca {
-        -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
+        -_cor : Cor
+        +cor() : Cor
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs) : bool
     }
     class Teletransporte {
-        +ativar(jogo : Jogo, jogador : Jogador, cidade_alvo: Cidade) : boolean
+        +ativar(jogo: Jogo, jogador: Jogador, cidade_alvo: Cidade) : bool
     }
     class ConstruirCentroPesquisa {
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs) : bool
     }
     class EventoDoenca {
-        -cor : Cor
-        +ativar(jogo : Jogo, jogador : Jogador, **kwargs) : boolean
+        -_cor : Cor
+        +cor() : Cor
+        +ativar(jogo: Jogo, jogador: Jogador, **kwargs) : bool
     }
 
     %% Relações de Herança
@@ -134,16 +157,15 @@ classDiagram
     Carta <|-- Teletransporte
     Carta <|-- ConstruirCentroPesquisa
 
-    %% Relações de Composição e Agregação
-    Jogo "1" *-- "1" Baralho
+    %% Relações
+    Jogo "1" *-- "0..1" Baralho : (baralho compartilhado)
     Jogo "1" *-- "1..4" Jogador
     Jogo "1" *-- "*" Cidade
     Jogo "1" *-- "4" Doenca
     Jogador "1" *-- "1" Mao
-    Mao "1" o-- "0..7" Carta
+    Jogador "1" *-- "0..1" Baralho : (baralho pessoal)
+    Mao "1" o-- "0..*" Carta
     Baralho "1" *-- "*" Carta
-
-    %% Relações de Associação
     Cidade "1" --> "*" Cidade : vizinha
     Jogador "1" --> "1" Cidade : posicao
 
