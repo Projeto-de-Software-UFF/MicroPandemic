@@ -13,7 +13,7 @@ CARD_DISTRIBUTION = {
     "ConstruirCentroPesquisa": 6,
     "BloquearInfeccao": 6,
     "TratarDoenca": 6,
-    "DescobrirCura": 6,
+    "DescobrirCura": 2,  # Por cor, então X * 4 cartas de cura
     "EventoDoenca": 2 # Por cor, então X * 4 cartas de evento
 }
 
