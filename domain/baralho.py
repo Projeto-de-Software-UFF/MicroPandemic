@@ -33,7 +33,8 @@ class Baralho:
                 elif card_name == "TratarDoenca":
                     self._cartas.append(TratarDoenca(random.choice(list(Cor))))
                 elif card_name == "DescobrirCura":
-                    self._cartas.append(DescobrirCura(random.choice(list(Cor))))
+                    for cor in Cor:
+                        self._cartas.append(DescobrirCura(cor))
                 elif card_name == "EventoDoenca":
                     for cor in Cor:
                         self._cartas.append(EventoDoenca(cor))
