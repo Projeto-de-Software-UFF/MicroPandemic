@@ -1,43 +1,48 @@
-import pytest
-from unittest.mock import Mock
+import unittest
 from controller.jogo_controller import Jogo
-from domain.doenca import Doenca
 from enuns.cor import Cor
 
-@pytest.fixture
-def jogo_vazio():
-    # Reinicia a instância do Jogo para cada teste
-    Jogo._instancia = None
-    jogo = Jogo.get_instancia()
-    # Garante que as doenças são inicializadas para o teste
-    jogo.doencas = {
-        Cor.AZUL: Doenca(Cor.AZUL),
-        Cor.AMARELO: Doenca(Cor.AMARELO),
-        Cor.VERMELHO: Doenca(Cor.VERMELHO),
-        Cor.VERDE: Doenca(Cor.VERDE),
-    }
-    return jogo
+class TestVictoryCondition(unittest.TestCase):
 
-def test_victory_condition_all_cured(jogo_vazio):
-    # Simula todas as doenças curadas
-    for cor in Cor:
-        jogo_vazio.doencas[cor].curada = True
+    def setUp(self):
+        """
+        Configura o ambiente para cada teste, garantindo que o estado do jogo
+        seja resetado. Este método é executado antes de cada método de teste.
+        """
+        # Reseta o singleton Jogo antes de cada teste para garantir isolamento
+        Jogo._instancia = None
+        self.jogo = Jogo.get_instancia()
+        self.jogo.inicializar_jogo(num_jogadores=1)
 
-    jogo_vazio.verificar_condicoes_finais()
-    assert jogo_vazio.vitoria == True
-    assert jogo_vazio.game_over == True
+    def test_vitoria_erradicando_todas_as_doencas(self):
+        """
+        Testa se o jogo termina em vitória quando todas as doenças são erradicadas do tabuleiro.
+        """
+        # Garante que o jogo não comece com vitória (já que doenças são espalhadas inicialmente)
+        self.jogo.verificar_condicoes_finais()
+        self.assertFalse(self.jogo.vitoria, "O jogo não deveria começar com uma condição de vitória.")
 
-def test_victory_condition_not_all_cured(jogo_vazio):
-    # Simula apenas algumas doenças curadas
-    jogo_vazio.doencas[Cor.AZUL].curada = True
-    jogo_vazio.doencas[Cor.AMARELO].curada = True
+        # Zera os níveis de todas as doenças em todas as cidades
+        for cidade in self.jogo.cidades.values():
+            for cor in Cor:
+                cidade.remover_toda_doenca_de_cor(cor)
 
-    jogo_vazio.verificar_condicoes_finais()
-    assert jogo_vazio.vitoria == False
-    assert jogo_vazio.game_over == False
+        # Verifica a condição de vitória novamente
+        self.jogo.verificar_condicoes_finais()
+        self.assertTrue(self.jogo.vitoria, "A vitória deveria ser declarada ao erradicar todas as doenças.")
+        self.assertTrue(self.jogo.game_over, "O jogo deveria terminar após a vitória.")
 
-def test_victory_condition_no_diseases_cured(jogo_vazio):
-    # Simula nenhuma doença curada
-    jogo_vazio.verificar_condicoes_finais()
-    assert jogo_vazio.vitoria == False
-    assert jogo_vazio.game_over == False
+    def test_vitoria_curando_todas_as_doencas(self):
+        """
+        Testa a condição de vitória original: curar todas as 4 doenças.
+        """
+        # Cura todas as doenças
+        for cor in Cor:
+            self.jogo.descobrir_cura(cor)
+
+        # A verificação já é chamada dentro de descobrir_cura, mas verificamos o estado final
+        self.assertTrue(self.jogo.vitoria, "A vitória deveria ser declarada ao curar todas as doenças.")
+        self.assertTrue(self.jogo.game_over, "O jogo deveria terminar após a vitória.")
+
+if __name__ == '__main__':
+    unittest.main()
