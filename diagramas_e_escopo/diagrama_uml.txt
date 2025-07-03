@@ -159,10 +159,10 @@ classDiagram
 
     %% Relações
     Jogo "1" -- "0..1" Baralho : (baralho compartilhado)
-    Jogo "1" *-- "1..4" Jogador
-    Jogo "1" *-- "4" Doenca
-    GameMap "1" *-- "*" Cidade
-    Jogador "1" *-- "1" Mao
+    Jogo "1" <-- "1..4" Jogador
+    Jogo "1" <-- "4" Doenca
+    GameMap "1" <-- "*" Cidade
+    Jogador "1" <-- "1" Mao
     Jogador "1" -- "0..1" Baralho : (baralho pessoal)
     Mao "1" o-- "0..*" Carta
     Baralho "1" *-- "*" Carta
