@@ -39,9 +39,14 @@ sequenceDiagram
     C-->>GL: retorna sucesso=true
     deactivate C
 
-    GL->>M: remover_carta(carta)
+    Note over GL,J: Se a ação foi bem-sucedida, a carta é removida da mão do jogador
+    GL->>J: mao.remover_carta(carta)
+    activate J
+    J->>M: remover_carta(carta)
     activate M
     deactivate M
+    deactivate J
+    
     GL->>G: decrementar acoes_restantes
     activate G
     deactivate G
@@ -74,6 +79,7 @@ sequenceDiagram
     Note over G,CD: Fase de Infecção
     G->>G: fase_infeccao()
     activate G
+    G->>G: seleciona cidade aleatória
     G->>CD: adicionar_nivel_doenca(cor, 1, set())
     activate CD
     opt Surto (Outbreak)
@@ -85,5 +91,6 @@ sequenceDiagram
     deactivate G
 
     G->>G: verificar_condicoes_finais()
+    
     G-->>GL:
     deactivate G
