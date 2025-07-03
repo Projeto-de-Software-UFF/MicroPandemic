@@ -22,10 +22,6 @@ classDiagram
     class Jogo {
         <<singleton>>
         -_instancia : Jogo
-        -jogadores : List~Jogador~
-        -cidades : Dict~str, Cidade~
-        -baralho : Baralho
-        -doencas : Dict~Cor, Doenca~
         -acoes_restantes : int
         -game_over : bool
         -vitoria : bool
@@ -50,7 +46,6 @@ classDiagram
 
     %% Classe Baralho
     class Baralho {
-        -_cartas : List~Carta~
         -_descarte : List~Carta~
         +Baralho(num_jogadores: int)
         -_inicializar_baralho(num_jogadores: int) : void
@@ -62,7 +57,6 @@ classDiagram
     %% Classe Cidade
     class Cidade {
         -_nome : str
-        -_vizinhas : List~Cidade~
         -_tem_centro_pesquisa : bool
         -_niveis_doenca : Dict~Cor, int~
         +Cidade(nome: str)
@@ -82,9 +76,6 @@ classDiagram
     %% Classe Jogador
     class Jogador {
         -_nome : str
-        -_posicao : Cidade
-        -_mao : Mao
-        -_baralho_pessoal : Baralho
         +Jogador(nome: str, posicao: Cidade, num_jogadores: int)
         +nome() : str
         +posicao() : Cidade
@@ -95,7 +86,6 @@ classDiagram
 
     %% Classe Mao
     class Mao {
-        -_cartas : List~Carta~
         -_limite_cartas : int
         +Mao()
         +cartas() : List~Carta~
