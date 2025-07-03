@@ -18,6 +18,16 @@ classDiagram
         ACAO
     }
 
+    %% Classe de Controle
+    class GameMap {
+        -_map: List~Cidade~
+        -_num_cidades: int
+        -_max_vizinhos_por_cidade: int
+        +GameMap(num_cidades: int, max_vizinhos_por_cidade: int)
+        -_criar_mapa() : void
+        +getMap() : List~Cidade~
+    }
+
     %% Classe Jogo (Singleton)
     class Jogo {
         <<singleton>>
@@ -148,18 +158,19 @@ classDiagram
     Carta <|-- ConstruirCentroPesquisa
 
     %% Relações
-    Jogo "1" *-- "0..1" Baralho : (baralho compartilhado)
+    Jogo "1" -- "0..1" Baralho : (baralho compartilhado)
     Jogo "1" *-- "1..4" Jogador
-    Jogo "1" *-- "*" Cidade
     Jogo "1" *-- "4" Doenca
+    GameMap "1" *-- "*" Cidade
     Jogador "1" *-- "1" Mao
-    Jogador "1" *-- "0..1" Baralho : (baralho pessoal)
+    Jogador "1" -- "0..1" Baralho : (baralho pessoal)
     Mao "1" o-- "0..*" Carta
     Baralho "1" *-- "*" Carta
     Cidade "1" --> "*" Cidade : vizinha
     Jogador "1" --> "1" Cidade : posicao
 
     %% Dependências
+    Jogo ..> GameMap : usa
     Carta ..> Jogo : usa
     Carta ..> Jogador : usa
     Teletransporte ..> Cidade : usa
