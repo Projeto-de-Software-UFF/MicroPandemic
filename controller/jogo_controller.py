@@ -222,8 +222,17 @@ class Jogo:
             print("Parabéns! Todas as doenças foram curadas. Vocês venceram!")
             self.vitoria = True
             self.game_over = True
+            return
 
-        # Derrota: nível de doença >= 7 em qualquer cidade
+        # Nova condição de vitória: nenhuma doença em nenhuma cidade
+        total_doencas = sum(nivel for cidade in self.cidades.values() for nivel in cidade.niveis_doenca.values())
+        if total_doencas == 0:
+            print("Parabéns! Não há mais doenças no mundo. Vocês venceram!")
+            self.vitoria = True
+            self.game_over = True
+            return
+
+        # Derrota: nível de doença >= config.CRITICAL_DISEASE_LEVEL em qualquer cidade
         for cidade in self.cidades.values():
             for nivel in cidade.niveis_doenca.values():
                 if nivel >= config.CRITICAL_DISEASE_LEVEL:
